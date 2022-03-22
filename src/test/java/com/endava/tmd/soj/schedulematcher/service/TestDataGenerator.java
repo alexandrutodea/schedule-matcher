@@ -16,7 +16,7 @@ public class TestDataGenerator {
         //it makes no sense to instantiate this class
     }
 
-    public static Stream<Arguments> getValidNonColorValidFilesTestData() {
+    public static Stream<Arguments> getValidNonColorFilesTestData() {
         return Stream.of(
                 Arguments.of("multipleBusyIntervalsOnMultipleDifferentDaysSchedule", buildSchedule(
 

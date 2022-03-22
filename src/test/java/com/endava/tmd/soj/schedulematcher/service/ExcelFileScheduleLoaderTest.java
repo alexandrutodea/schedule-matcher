@@ -18,7 +18,7 @@ class ExcelFileScheduleLoaderTest {
     private final ScheduleLoader scheduleLoader = new ExcelFileScheduleLoader();
 
     @ParameterizedTest(name = "Test referencing {0}.xlsx file")
-    @MethodSource(value = "com.endava.tmd.soj.schedulematcher.service.TestDataGenerator#getValidNonColorValidFilesTestData")
+    @MethodSource(value = "com.endava.tmd.soj.schedulematcher.service.TestDataGenerator#getValidNonColorFilesTestData")
     void validNonColorTestFilesGetLoadedProperly(String fileName, Schedule expectedSchedule) throws FileNotFoundException {
         assertThat(scheduleLoader.loadSchedule(new FileInputStream(Utils.buildFilePath(Directory.VALID_NON_COLOR, fileName))))
                 .isEqualTo(expectedSchedule);
