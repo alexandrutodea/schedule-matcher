@@ -75,4 +75,37 @@ public class Schedule {
                && timeInterval.getStart() < markedInterval.getEnd();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Schedule schedule = (Schedule) o;
+        if (this.busyTimeIntervals.entrySet().size() != schedule.busyTimeIntervals.entrySet().size()) return false;
+
+        for (Day day : this.busyTimeIntervals.keySet()) {
+
+            if (!schedule.busyTimeIntervals.containsKey(day)) {
+                return false;
+            }
+
+            if (!this.busyTimeIntervals.get(day).equals(schedule.busyTimeIntervals.get(day))) {
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+               "busyTimeIntervals=" + busyTimeIntervals.toString() +
+               '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(busyTimeIntervals);
+    }
 }

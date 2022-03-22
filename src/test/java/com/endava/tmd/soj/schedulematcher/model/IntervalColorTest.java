@@ -23,7 +23,7 @@ class IntervalColorTest {
 
     @ParameterizedTest(name = "Hex code for {0} is {1}")
     @MethodSource(value = "getTestData")
-    void testSumMethod(IntervalColor color, String code) {
+    void testColorCode(IntervalColor color, String code) {
         assertThat(color
                 .getCode())
                 .isEqualTo(code);

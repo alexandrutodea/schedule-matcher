@@ -1,8 +1,8 @@
 package com.endava.tmd.soj.schedulematcher.client;
 
-import com.endava.tmd.soj.schedulematcher.services.ScheduleLoader;
-import com.endava.tmd.soj.schedulematcher.services.ScheduleWriter;
-import com.endava.tmd.soj.schedulematcher.services.TemplateFileDownloader;
+import com.endava.tmd.soj.schedulematcher.service.ScheduleLoader;
+import com.endava.tmd.soj.schedulematcher.service.ScheduleWriter;
+import com.endava.tmd.soj.schedulematcher.service.TemplateFileDownloader;
 
 public class ClientApplication {
     private ScheduleLoader scheduleLoader;

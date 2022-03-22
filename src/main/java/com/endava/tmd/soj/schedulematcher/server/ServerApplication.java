@@ -1,6 +1,6 @@
 package com.endava.tmd.soj.schedulematcher.server;
 
-import com.endava.tmd.soj.schedulematcher.services.ScheduleGroupManager;
+import com.endava.tmd.soj.schedulematcher.service.ScheduleGroupManager;
 
 public class ServerApplication {
     private ScheduleGroupManager scheduleGroupManager;

@@ -10,7 +10,7 @@ package com.endava.tmd.soj.schedulematcher.model;
 public enum IntervalColor {
 
     RED("#FF0000"),
-    YELLOW("#00F00"),
+    YELLOW("#FFFF00"),
     GREEN("#7CFC00"),
     WHITE("#FFFFFF");
 

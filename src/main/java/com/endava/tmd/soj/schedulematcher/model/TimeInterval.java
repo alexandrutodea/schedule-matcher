@@ -33,6 +33,16 @@ public class TimeInterval {
     }
 
     /**
+     * Works just like {@link TimeInterval#TimeInterval(int, int)} except that a color representing the people's
+     * availability in the given time interval can also be specified
+     * @see TimeInterval#TimeInterval(int, int)
+     */
+    public TimeInterval(int start, int end, IntervalColor intervalColor) {
+        this(start, end);
+        this.intervalColor = intervalColor;
+    }
+
+    /**
      * @return the starting hour for the time interval in 24-hour format
      */
     public int getStart() {
@@ -71,5 +81,14 @@ public class TimeInterval {
     @Override
     public int hashCode() {
         return Objects.hash(start, end, intervalColor);
+    }
+
+    @Override
+    public String toString() {
+        return "TimeInterval{" +
+               "start=" + start +
+               ", end=" + end +
+               ", intervalColor=" + intervalColor +
+               '}';
     }
 }

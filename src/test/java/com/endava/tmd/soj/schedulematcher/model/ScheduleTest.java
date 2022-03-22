@@ -76,7 +76,7 @@ class ScheduleTest {
     }
 
     @Test
-    @DisplayName("An exception gets thrown if the time interval's start hour is in a marked time interval")
+    @DisplayName("An exception gets thrown if the time interval's starting hour is in a marked time interval")
     void timeIntervalsOverlap() {
         schedule.addBusyTimeInterval(Day.MONDAY, new TimeInterval(15, 17));
         assertThatThrownBy(() -> schedule
@@ -108,5 +108,76 @@ class ScheduleTest {
                 .addBusyTimeInterval(Day.MONDAY, new TimeInterval(17, 18)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("This time interval overlaps with another time interval that has been marked as busy for the given day");
+    }
+
+    @Test
+    @DisplayName("equals method returns true if the compared schedules contain the same busy interval")
+    void equalsReturnsTrueForSameIntervals() {
+        schedule.addBusyTimeInterval(Day.MONDAY, new TimeInterval(10, 11));
+        var otherSchedule = new Schedule();
+        otherSchedule.addBusyTimeInterval(Day.MONDAY, new TimeInterval(10, 11));
+        assertThat(schedule.equals(otherSchedule)).isTrue();
+    }
+
+    @Test
+    @DisplayName("equals method returns true if schedules contain the same busy intervals for multiple days")
+    void equalsReturnsTrueForMultipleIdenticalIntervals() {
+        addBusyTimeIntervals(schedule);
+        var otherSchedule = new Schedule();
+        addBusyTimeIntervals(otherSchedule);
+        assertThat(schedule.equals(otherSchedule)).isTrue();
+    }
+
+    @Test
+    @DisplayName("equals method returns false if schedules contain a different busy time interval for the same day")
+    void equalsReturnsFalseForOneDifferentTimeIntervals() {
+        schedule.addBusyTimeInterval(Day.TUESDAY, new TimeInterval(15, 16));
+        var otherSchedule = new Schedule();
+        otherSchedule.addBusyTimeInterval(Day.TUESDAY, new TimeInterval(10, 11));
+        assertThat(schedule.equals(otherSchedule)).isFalse();
+    }
+
+    @Test
+    @DisplayName("equals method returns false if schedules contain different busy time intervals for multiple days")
+    void equalsReturnsFalseForMultipleDifferentTimeIntervals() {
+        addBusyTimeIntervals(schedule);
+        var otherSchedule = new Schedule();
+        otherSchedule.addBusyTimeInterval(Day.MONDAY, new TimeInterval(11, 12));
+        otherSchedule.addBusyTimeInterval(Day.FRIDAY, new TimeInterval(14, 15));
+        otherSchedule.addBusyTimeInterval(Day.SATURDAY, new TimeInterval(16, 17));
+        otherSchedule.addBusyTimeInterval(Day.SUNDAY, new TimeInterval(10, 11));
+        assertThat(schedule.equals(otherSchedule)).isFalse();
+    }
+
+    @Test
+    @DisplayName("equals method returns true if the compared schedules contain no busy intervals")
+    void equalsReturnsTrueForNoTimeIntervals() {
+        var otherSchedule = new Schedule();
+        assertThat(schedule.equals(otherSchedule)).isTrue();
+    }
+
+    @Test
+    @DisplayName("equals method returns false if one schedule has no busy time intervals")
+    void equalsReturnsFalseIfOneScheduleHasNoBusyTimeIntervals() {
+        addBusyTimeIntervals(schedule);
+        var otherSchedule = new Schedule();
+        assertThat(schedule.equals(otherSchedule)).isFalse();
+    }
+
+    @Test
+    @DisplayName("equals method returns false is two identical intervals have the same color")
+    void equalsReturnsFalseForIdenticalIntervalsWithDifferentColors() {
+        addBusyTimeIntervals(schedule);
+        schedule.addBusyTimeInterval(Day.WEDNESDAY, new TimeInterval(15, 16, IntervalColor.RED));
+        var otherSchedule = new Schedule();
+        otherSchedule.addBusyTimeInterval(Day.WEDNESDAY, new TimeInterval(15, 16, IntervalColor.YELLOW));
+        assertThat(schedule.equals(otherSchedule)).isFalse();
+    }
+
+    private static void addBusyTimeIntervals(Schedule schedule) {
+        schedule.addBusyTimeInterval(Day.MONDAY, new TimeInterval(10, 11));
+        schedule.addBusyTimeInterval(Day.FRIDAY, new TimeInterval(13, 14));
+        schedule.addBusyTimeInterval(Day.SATURDAY, new TimeInterval(15, 16));
+        schedule.addBusyTimeInterval(Day.SUNDAY, new TimeInterval(18, 19));
     }
 }
