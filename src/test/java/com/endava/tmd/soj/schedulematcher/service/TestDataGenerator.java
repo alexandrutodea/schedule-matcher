@@ -102,15 +102,15 @@ public class TestDataGenerator {
                         Map.of(Day.FRIDAY, List.of(new TimeInterval(17, 18)),
                                 Day.SATURDAY, List.of(new TimeInterval(17, 18))))),
 
-                Arguments.of("multipleYellowIntervalsSchedule", Map.of(
-                        Day.FRIDAY, List.of(new TimeInterval(17, 18, IntervalColor.YELLOW),
-                                new TimeInterval(17, 18, IntervalColor.YELLOW)))),
+                Arguments.of("multipleYellowIntervalsSchedule", buildSchedule(
+                        Map.of(Day.FRIDAY, List.of(new TimeInterval(17, 18, IntervalColor.YELLOW)),
+                                Day.SATURDAY, List.of(new TimeInterval(17, 18, IntervalColor.YELLOW))))),
 
-                Arguments.of("oneRedIntervalSchedule", Map.of(
-                        Day.FRIDAY, List.of(new TimeInterval(17, 18, IntervalColor.RED)))),
+                Arguments.of("oneRedIntervalSchedule", buildSchedule(Map.of(
+                        Day.FRIDAY, List.of(new TimeInterval(17, 18, IntervalColor.RED))))),
 
-                Arguments.of("oneYellowIntervalSchedule", Map.of(
-                        Day.FRIDAY, List.of(new TimeInterval(17, 18, IntervalColor.YELLOW)))));
+                Arguments.of("oneYellowIntervalSchedule", buildSchedule(Map.of(
+                        Day.FRIDAY, List.of(new TimeInterval(17, 18, IntervalColor.YELLOW))))));
     }
 
     public static Stream<Arguments> getInvalidTestData() {

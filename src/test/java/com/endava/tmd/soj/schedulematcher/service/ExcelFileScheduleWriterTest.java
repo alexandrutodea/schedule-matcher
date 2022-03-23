@@ -18,8 +18,8 @@ class ExcelFileScheduleWriterTest {
     private final ScheduleWriter scheduleWriter = new ExcelFileScheduleWriter();
     private final ScheduleLoader scheduleLoader = new ExcelFileScheduleLoader();
 
-    @ParameterizedTest(name = "Test referencing {0}.xlsx file")
-    @MethodSource(value = "com.endava.tmd.soj.schedulematcher.service.TestDataGenerator#getValidNonColorFilesTestData")
+    @ParameterizedTest(name = "Writer works properly for {0}.xlsx file")
+    @MethodSource(value = "com.endava.tmd.soj.schedulematcher.service.TestDataGenerator#getValidColorFilesTestData")
     public void excelFileGetsProperlyWritten(String fileName, Schedule initialData) throws IOException {
         final var excelFile = File.createTempFile("report" + System.currentTimeMillis(), ".xlsx", new File("target"));
         excelFile.deleteOnExit();

@@ -17,21 +17,21 @@ class ExcelFileScheduleLoaderTest {
 
     private final ScheduleLoader scheduleLoader = new ExcelFileScheduleLoader();
 
-    @ParameterizedTest(name = "Test referencing {0}.xlsx file")
+    @ParameterizedTest(name = "Loader works properly for {0}.xlsx file")
     @MethodSource(value = "com.endava.tmd.soj.schedulematcher.service.TestDataGenerator#getValidNonColorFilesTestData")
     void validNonColorTestFilesGetLoadedProperly(String fileName, Schedule expectedSchedule) throws FileNotFoundException {
         assertThat(scheduleLoader.loadSchedule(new FileInputStream(Utils.buildFilePath(Directory.VALID_NON_COLOR, fileName))))
                 .isEqualTo(expectedSchedule);
     }
 
-    @ParameterizedTest(name = "Test referencing {0}.xlsx file")
+    @ParameterizedTest(name = "Loader works properly {0}.xlsx file")
     @MethodSource(value = "com.endava.tmd.soj.schedulematcher.service.TestDataGenerator#getValidColorFilesTestData")
     void validColorTestFilesGetLoadedProperly(String fileName, Schedule expectedSchedule) throws FileNotFoundException {
         assertThat(scheduleLoader.loadSchedule(new FileInputStream(Utils.buildFilePath(Directory.VALID_COLOR, fileName))))
                 .isEqualTo(expectedSchedule);
     }
 
-    @ParameterizedTest(name = "Test referencing {0}.xlsx file")
+    @ParameterizedTest(name = "InvalidExcelFile exception should be thrown when trying to open {0}.xlsx file")
     @MethodSource(value = "com.endava.tmd.soj.schedulematcher.service.TestDataGenerator#getInvalidTestData")
     void appropriateExceptionsGetThrownForInvalidTestFiles(String fileName, String errorMessage) {
         assertThatThrownBy(() -> scheduleLoader.loadSchedule(new FileInputStream(Utils.buildFilePath(Directory.INVALID, fileName))))
