@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class TestDataGenerator {
+public class ExcelTestDataGenerator {
 
-    private TestDataGenerator() {
+    private ExcelTestDataGenerator() {
         //it makes no sense to instantiate this class
     }
 

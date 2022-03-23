@@ -165,13 +165,21 @@ class ScheduleTest {
     }
 
     @Test
-    @DisplayName("equals method returns false is two identical intervals have the same color")
+    @DisplayName("equals method returns false is two identical intervals do not have the same color")
     void equalsReturnsFalseForIdenticalIntervalsWithDifferentColors() {
-        addBusyTimeIntervals(schedule);
         schedule.addBusyTimeInterval(Day.WEDNESDAY, new TimeInterval(15, 16, IntervalColor.RED));
         var otherSchedule = new Schedule();
         otherSchedule.addBusyTimeInterval(Day.WEDNESDAY, new TimeInterval(15, 16, IntervalColor.YELLOW));
         assertThat(schedule.equals(otherSchedule)).isFalse();
+    }
+
+    @Test
+    @DisplayName("equals method returns false is two identical intervals do not have the same color")
+    void equalsReturnsTrueForIdenticalIntervalsWithSameColors() {
+        schedule.addBusyTimeInterval(Day.WEDNESDAY, new TimeInterval(15, 16, IntervalColor.RED));
+        var otherSchedule = new Schedule();
+        otherSchedule.addBusyTimeInterval(Day.WEDNESDAY, new TimeInterval(15, 16, IntervalColor.RED));
+        assertThat(schedule.equals(otherSchedule)).isTrue();
     }
 
     private static void addBusyTimeIntervals(Schedule schedule) {
