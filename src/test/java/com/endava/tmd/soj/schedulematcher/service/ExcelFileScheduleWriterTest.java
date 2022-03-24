@@ -23,7 +23,7 @@ class ExcelFileScheduleWriterTest {
     public void excelFileGetsProperlyWritten(String fileName, Schedule initialData) throws IOException {
         final var excelFile = File.createTempFile("report" + System.currentTimeMillis(), ".xlsx", new File("target"));
         excelFile.deleteOnExit();
-        scheduleWriter.writeSchedule(new FileOutputStream(excelFile));
+        scheduleWriter.writeSchedule(new FileOutputStream(excelFile), initialData);
         final var importedData = scheduleLoader.loadSchedule(new FileInputStream(excelFile));
         assertThat(initialData).isEqualTo(importedData);
     }
