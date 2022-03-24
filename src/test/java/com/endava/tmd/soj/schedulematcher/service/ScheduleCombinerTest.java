@@ -33,9 +33,7 @@ class ScheduleCombinerTest {
         var expected = new Schedule();
         expected.addBusyTimeInterval(Day.MONDAY, new TimeInterval(15, 16, IntervalColor.YELLOW));
         expected.addBusyTimeInterval(Day.TUESDAY, new TimeInterval(17, 18, IntervalColor.YELLOW));
-        assertThat(ScheduleCombiner
-                .getCombinedSchedule(scheduleGroup))
-                .isEqualTo(expected);
+        assertResultedSchedule(scheduleGroup, expected);
     }
 
     @Test
@@ -49,9 +47,7 @@ class ScheduleCombinerTest {
         expected.addBusyTimeInterval(Day.MONDAY, new TimeInterval(15, 16, IntervalColor.YELLOW));
         expected.addBusyTimeInterval(Day.TUESDAY, new TimeInterval(17, 18, IntervalColor.YELLOW));
         expected.addBusyTimeInterval(Day.FRIDAY, new TimeInterval(12, 13, IntervalColor.YELLOW));
-        assertThat(ScheduleCombiner
-                .getCombinedSchedule(scheduleGroup))
-                .isEqualTo(expected);
+        assertResultedSchedule(scheduleGroup, expected);
     }
 
     @Test
@@ -64,9 +60,7 @@ class ScheduleCombinerTest {
         var expected = new Schedule();
         expected.addBusyTimeInterval(Day.MONDAY, new TimeInterval(15, 16, IntervalColor.RED));
         expected.addBusyTimeInterval(Day.TUESDAY, new TimeInterval(17, 18, IntervalColor.YELLOW));
-        assertThat(ScheduleCombiner
-                .getCombinedSchedule(scheduleGroup))
-                .isEqualTo(expected);
+        assertResultedSchedule(scheduleGroup, expected);
     }
 
     @Test
@@ -77,9 +71,7 @@ class ScheduleCombinerTest {
         scheduleGroup.addMemberSchedule(personBusyOnMondaySchedule);
         var expected = new Schedule();
         expected.addBusyTimeInterval(Day.MONDAY, new TimeInterval(15, 16, IntervalColor.RED));
-        assertThat(ScheduleCombiner
-                .getCombinedSchedule(scheduleGroup))
-                .isEqualTo(expected);
+        assertResultedSchedule(scheduleGroup, expected);
     }
 
     @Test
@@ -91,8 +83,12 @@ class ScheduleCombinerTest {
         scheduleGroup.addMemberSchedule(personBusyOnMondaySchedule);
         scheduleGroup.addMemberSchedule(personBusyOnMondaySchedule);
         scheduleGroup.addMemberSchedule(personBusyOnMondaySchedule);
-        var schedule = new Schedule();
-        schedule.addBusyTimeInterval(Day.MONDAY, new TimeInterval(15, 16, IntervalColor.RED));
+        var expected = new Schedule();
+        expected.addBusyTimeInterval(Day.MONDAY, new TimeInterval(15, 16, IntervalColor.RED));
+        assertResultedSchedule(scheduleGroup, expected);
+    }
+
+    public static void assertResultedSchedule(ScheduleGroup scheduleGroup, Schedule schedule) {
         assertThat(ScheduleCombiner
                 .getCombinedSchedule(scheduleGroup))
                 .isEqualTo(schedule);
