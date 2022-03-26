@@ -23,11 +23,6 @@ public class ScheduleCombiner {
      */
     public static Schedule getCombinedSchedule(ScheduleGroup scheduleGroup) {
 
-        /* We should have a function which shows us if there is a TimeInterval booked */
-        /* There is one but is private. We should avoid throwing exceptions and provide a function which checks if
-        the TimeInterval is present.
-         */
-
         List<Schedule> scheduleList = scheduleGroup.getMemberSchedules();
 
         Schedule combinedSchedules = new Schedule();

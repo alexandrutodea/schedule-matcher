@@ -54,6 +54,7 @@ public class Schedule {
      * @return true if the time interval overlaps with any of the marked time intervals
      */
     public boolean isThereOverlapping(List<TimeInterval> markedIntervals, TimeInterval timeInterval) {
+
         return markedIntervals
                 .stream()
                 .anyMatch(markedInterval -> isStartHourInMarkedInterval(markedInterval, timeInterval));
@@ -65,29 +66,36 @@ public class Schedule {
      * @return true if the start hour of the time interval is in the marked time interval
      */
     private boolean isStartHourInMarkedInterval(TimeInterval markedInterval, TimeInterval timeInterval) {
-        return timeInterval.getStart() >= markedInterval.getStart()
-               && timeInterval.getEnd() < markedInterval.getEnd();
+        return (timeInterval.getStart() >= markedInterval.getStart())
+                && (timeInterval.getEnd() <= markedInterval.getEnd());
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || (getClass() != o.getClass())) {
+            return false;
+        }
+
         Schedule schedule = (Schedule) o;
-        if (this.busyTimeIntervals.entrySet().size() != schedule.busyTimeIntervals.entrySet().size()) return false;
+
+        if (this.busyTimeIntervals.entrySet().size() != schedule.busyTimeIntervals.entrySet().size()) {
+            return false;
+        }
 
         for (Day day : this.busyTimeIntervals.keySet()) {
 
             if (!schedule.busyTimeIntervals.containsKey(day)) {
                 return false;
             }
-
             if (!this.busyTimeIntervals.get(day).equals(schedule.busyTimeIntervals.get(day))) {
                 return false;
             }
-
         }
-
         return true;
     }
 
