@@ -68,8 +68,9 @@ public class ScheduleCombiner {
             if (alreadyExistingInterval.isPresent()) {
                 alreadyExistingInterval.get().setIntervalColor(IntervalColor.RED);
             } else {
-                interval.setIntervalColor(IntervalColor.YELLOW);
-                coloredIntervals.add(interval);
+                TimeInterval coloredInterval = new TimeInterval(interval.getStart(), interval.getEnd());
+                coloredInterval.setIntervalColor(IntervalColor.YELLOW);
+                coloredIntervals.add(coloredInterval);
             }
 
         }
