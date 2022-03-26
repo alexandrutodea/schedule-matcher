@@ -1,15 +1,13 @@
 package com.endava.tmd.soj.schedulematcher.service;
 
-import com.endava.tmd.soj.schedulematcher.model.Day;
-import com.endava.tmd.soj.schedulematcher.model.Schedule;
-import com.endava.tmd.soj.schedulematcher.model.ScheduleGroup;
-import com.endava.tmd.soj.schedulematcher.model.TimeInterval;
+import com.endava.tmd.soj.schedulematcher.model.*;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
  * The {@code ScheduleCombiner} is a service that merges all the schedules in a {@code ScheduleGroup}
+ *
  * @see ScheduleGroup
  */
 public class ScheduleCombiner {
@@ -17,6 +15,7 @@ public class ScheduleCombiner {
      * Returns a merged schedule of all schedules in a {@link ScheduleGroup} and marks every busy time interval
      * with an {@link com.endava.tmd.soj.schedulematcher.model.IntervalColor} that indicates the people's overall
      * availability in the time interval
+     *
      * @param scheduleGroup the {@link ScheduleGroup} that we want to merge
      * @return a merged schedule of all schedules in the {@link ScheduleGroup}
      * @see com.endava.tmd.soj.schedulematcher.model.IntervalColor
@@ -35,79 +34,116 @@ public class ScheduleCombiner {
 
         scheduleList.forEach(schedule -> {
 
-            Optional<List<TimeInterval>> optionalTimeInterval = schedule.getBusyTimeIntervals(Day.MONDAY);
+            final Optional<List<TimeInterval>> optionalTimeIntervalMonday = schedule.getBusyTimeIntervals(Day.MONDAY);
 
             /* If any schedule is present on MONDAY */
-            if(optionalTimeInterval.isPresent()){
+            if (optionalTimeIntervalMonday.isPresent()) {
 
                 /* For each time interval on MONDAY */
-                optionalTimeInterval.get().forEach(timeInterval -> {
-                    combinedSchedules.addBusyTimeInterval(Day.MONDAY, timeInterval);
+                optionalTimeIntervalMonday.get().forEach(timeInterval -> {
+
+                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalMonday.get(), timeInterval))) {
+                        combinedSchedules.addBusyTimeInterval(Day.MONDAY, timeInterval);
+                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
+                    }else{
+                        timeInterval.setIntervalColor(IntervalColor.RED);
+                    }
                 });
             }
 
-            optionalTimeInterval = schedule.getBusyTimeIntervals(Day.TUESDAY);
+            final Optional<List<TimeInterval>> optionalTimeIntervalTuesday = schedule.getBusyTimeIntervals(Day.TUESDAY);
 
             /* If any schedule is present on TUESDAY */
-            if(optionalTimeInterval.isPresent()){
+            if (optionalTimeIntervalTuesday.isPresent()) {
 
                 /* For each time interval on TUESDAY */
-                optionalTimeInterval.get().forEach(timeInterval -> {
-                    combinedSchedules.addBusyTimeInterval(Day.TUESDAY, timeInterval);
+                optionalTimeIntervalTuesday.get().forEach(timeInterval -> {
+                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalTuesday.get(), timeInterval))) {
+                        combinedSchedules.addBusyTimeInterval(Day.TUESDAY, timeInterval);
+                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
+                    }else{
+                        timeInterval.setIntervalColor(IntervalColor.RED);
+                    }
                 });
             }
 
-            optionalTimeInterval = schedule.getBusyTimeIntervals(Day.WEDNESDAY);
+            final Optional<List<TimeInterval>> optionalTimeIntervalWednesday = schedule.getBusyTimeIntervals(Day.WEDNESDAY);
 
             /* If any schedule is present on WEDNESDAY */
-            if(optionalTimeInterval.isPresent()){
+            if (optionalTimeIntervalWednesday.isPresent()) {
 
                 /* For each time interval on WEDNESDAY */
-                optionalTimeInterval.get().forEach(timeInterval -> {
-                    combinedSchedules.addBusyTimeInterval(Day.WEDNESDAY, timeInterval);
+                optionalTimeIntervalWednesday.get().forEach(timeInterval -> {
+                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalWednesday.get(), timeInterval))) {
+                        combinedSchedules.addBusyTimeInterval(Day.WEDNESDAY, timeInterval);
+                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
+                    }else{
+                        timeInterval.setIntervalColor(IntervalColor.RED);
+                    }
                 });
             }
-            optionalTimeInterval = schedule.getBusyTimeIntervals(Day.THURSDAY);
+
+            final Optional<List<TimeInterval>> optionalTimeIntervalThursday = schedule.getBusyTimeIntervals(Day.THURSDAY);
 
             /* If any schedule is present on THURSDAY */
-            if(optionalTimeInterval.isPresent()){
+            if (optionalTimeIntervalThursday.isPresent()) {
 
                 /* For each time interval on THURSDAY */
-                optionalTimeInterval.get().forEach(timeInterval -> {
-                    combinedSchedules.addBusyTimeInterval(Day.THURSDAY, timeInterval);
+                optionalTimeIntervalThursday.get().forEach(timeInterval -> {
+                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalThursday.get(), timeInterval))) {
+                        combinedSchedules.addBusyTimeInterval(Day.THURSDAY, timeInterval);
+                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
+                    }else{
+                        timeInterval.setIntervalColor(IntervalColor.RED);
+                    }
                 });
             }
 
-            optionalTimeInterval = schedule.getBusyTimeIntervals(Day.FRIDAY);
+            final Optional<List<TimeInterval>> optionalTimeIntervalFriday = schedule.getBusyTimeIntervals(Day.FRIDAY);
 
             /* If any schedule is present on FRIDAY */
-            if(optionalTimeInterval.isPresent()){
+            if (optionalTimeIntervalFriday.isPresent()) {
 
                 /* For each time interval on FRIDAY */
-                optionalTimeInterval.get().forEach(timeInterval -> {
-                    combinedSchedules.addBusyTimeInterval(Day.FRIDAY, timeInterval);
+                optionalTimeIntervalFriday.get().forEach(timeInterval -> {
+                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalFriday.get(), timeInterval))) {
+                        combinedSchedules.addBusyTimeInterval(Day.FRIDAY, timeInterval);
+                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
+                    }else{
+                        timeInterval.setIntervalColor(IntervalColor.RED);
+                    }
                 });
             }
 
-            optionalTimeInterval = schedule.getBusyTimeIntervals(Day.SATURDAY);
+            final Optional<List<TimeInterval>> optionalTimeIntervalSaturday = schedule.getBusyTimeIntervals(Day.SATURDAY);
 
             /* If any schedule is present on SATURDAY */
-            if(optionalTimeInterval.isPresent()){
+            if (optionalTimeIntervalSaturday.isPresent()) {
 
                 /* For each time interval on SATURDAY */
-                optionalTimeInterval.get().forEach(timeInterval -> {
-                    combinedSchedules.addBusyTimeInterval(Day.SATURDAY, timeInterval);
+                optionalTimeIntervalSaturday.get().forEach(timeInterval -> {
+                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalSaturday.get(), timeInterval))) {
+                        combinedSchedules.addBusyTimeInterval(Day.SATURDAY, timeInterval);
+                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
+                    }else{
+                        timeInterval.setIntervalColor(IntervalColor.RED);
+                    }
                 });
             }
 
-            optionalTimeInterval = schedule.getBusyTimeIntervals(Day.SUNDAY);
+            final Optional<List<TimeInterval>> optionalTimeIntervalSunday = schedule.getBusyTimeIntervals(Day.SUNDAY);
 
             /* If any schedule is present on SUNDAY */
-            if(optionalTimeInterval.isPresent()){
+            if (optionalTimeIntervalSunday.isPresent()) {
 
                 /* For each time interval on SUNDAY */
-                optionalTimeInterval.get().forEach(timeInterval -> {
-                    combinedSchedules.addBusyTimeInterval(Day.SUNDAY, timeInterval);
+                optionalTimeIntervalSunday.get().forEach(timeInterval -> {
+                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalSunday.get(), timeInterval))) {
+                        combinedSchedules.addBusyTimeInterval(Day.SUNDAY, timeInterval);
+                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
+                    }else{
+                        timeInterval.setIntervalColor(IntervalColor.RED);
+                    }
                 });
             }
 

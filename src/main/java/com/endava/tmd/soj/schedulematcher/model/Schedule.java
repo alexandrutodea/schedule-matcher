@@ -34,12 +34,6 @@ public class Schedule {
         if (markedTimeIntervals == null) {
             busyTimeIntervals.put(day, new ArrayList<>());
             busyTimeIntervals.get(day).add(timeInterval);
-        } else if (markedTimeIntervals.size() == 0) {
-            markedTimeIntervals.add(timeInterval);
-        } else if (markedTimeIntervals.contains(timeInterval)) {
-            throw new IllegalArgumentException("This time interval has already been marked as busy for the given day");
-        } else if (isThereOverlapping(markedTimeIntervals, timeInterval)) {
-            throw new IllegalArgumentException("This time interval overlaps with another time interval that has been marked as busy for the given day");
         } else {
             markedTimeIntervals.add(timeInterval);
         }
@@ -59,7 +53,7 @@ public class Schedule {
      * @param timeInterval the time interval that we want to check for overlapping
      * @return true if the time interval overlaps with any of the marked time intervals
      */
-    private boolean isThereOverlapping(List<TimeInterval> markedIntervals, TimeInterval timeInterval) {
+    public boolean isThereOverlapping(List<TimeInterval> markedIntervals, TimeInterval timeInterval) {
         return markedIntervals
                 .stream()
                 .anyMatch(markedInterval -> isStartHourInMarkedInterval(markedInterval, timeInterval));
@@ -72,7 +66,7 @@ public class Schedule {
      */
     private boolean isStartHourInMarkedInterval(TimeInterval markedInterval, TimeInterval timeInterval) {
         return timeInterval.getStart() >= markedInterval.getStart()
-               && timeInterval.getStart() < markedInterval.getEnd();
+               && timeInterval.getEnd() < markedInterval.getEnd();
     }
 
     @Override
