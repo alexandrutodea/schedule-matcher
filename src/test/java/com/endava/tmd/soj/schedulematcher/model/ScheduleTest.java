@@ -1,5 +1,6 @@
 package com.endava.tmd.soj.schedulematcher.model;
 
+import org.assertj.core.internal.bytebuddy.build.ToStringPlugin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,6 +77,16 @@ class ScheduleTest {
     }
 
     @Test
+    @DisplayName("An exception gets thrown if the starting hour is smaller but the intervals still overlap")
+    void startingHourIsSmallerAndIntervalsOverlap() {
+        schedule.addBusyTimeInterval(Day.MONDAY, new TimeInterval(11, 12));
+        assertThatThrownBy(() -> schedule
+                .addBusyTimeInterval(Day.MONDAY, new TimeInterval(10, 12)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("This time interval overlaps with another time interval that has been marked as busy for the given day");;
+    }
+
+    @Test
     @DisplayName("An exception gets thrown if the time interval's starting hour is in a marked time interval")
     void timeIntervalsOverlap() {
         schedule.addBusyTimeInterval(Day.MONDAY, new TimeInterval(15, 17));
@@ -101,13 +112,23 @@ class ScheduleTest {
     }
 
     @Test
-    @DisplayName("An exception gets thrown if the time interval is inside another time interval")
+    @DisplayName("An exception gets thrown if the time interval is inside another existing time interval")
     void timeIntervalIsInsideAnotherTimeInterval() {
         schedule.addBusyTimeInterval(Day.MONDAY, new TimeInterval(16, 20));
         assertThatThrownBy(() -> schedule
                 .addBusyTimeInterval(Day.MONDAY, new TimeInterval(17, 18)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("This time interval overlaps with another time interval that has been marked as busy for the given day");
+    }
+
+    @Test
+    @DisplayName("An exception gets thrown if an existing time interval is inside the time interval")
+    void endingHourIsGreaterAndIntervalsOverlap() {
+        schedule.addBusyTimeInterval(Day.MONDAY, new TimeInterval(11, 18));
+        assertThatThrownBy(() -> schedule
+                .addBusyTimeInterval(Day.MONDAY, new TimeInterval(10, 19)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("This time interval overlaps with another time interval that has been marked as busy for the given day");;
     }
 
     @Test

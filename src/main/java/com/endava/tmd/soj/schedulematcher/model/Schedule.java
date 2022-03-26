@@ -64,7 +64,8 @@ public class Schedule {
     private boolean isThereOverlapping(List<TimeInterval> markedIntervals, TimeInterval timeInterval) {
         return markedIntervals
                 .stream()
-                .anyMatch(markedInterval -> isStartHourInMarkedInterval(markedInterval, timeInterval));
+                .anyMatch(markedInterval -> isStartHourInMarkedInterval(markedInterval, timeInterval)
+                || isStartHourInMarkedInterval(timeInterval, markedInterval));
     }
 
     /**
