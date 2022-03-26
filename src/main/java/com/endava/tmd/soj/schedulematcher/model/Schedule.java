@@ -1,9 +1,6 @@
 package com.endava.tmd.soj.schedulematcher.model;
 
-import org.apache.commons.math3.geometry.euclidean.oned.Interval;
-
 import java.util.*;
-import java.util.function.Predicate;
 
 /**
  * The {@code Schedule} class represents a person's weekly timetable
