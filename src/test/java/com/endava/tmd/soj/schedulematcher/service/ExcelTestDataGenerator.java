@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Named.named;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+
 public class ExcelTestDataGenerator {
 
     private ExcelTestDataGenerator() {
@@ -115,14 +118,14 @@ public class ExcelTestDataGenerator {
 
     public static Stream<Arguments> getInvalidTestData() {
         return Stream.of(
-                Arguments.of("colorAndXSchedule", "A cell cannot be both marked with an X and a color"),
-                Arguments.of("emptySchedule", "A schedule file must contain at least one busy interval"),
-                Arguments.of("invalidCellContentSchedule", "A cell may only contain a lowercase x"),
-                Arguments.of("invalidColorSchedule", "A cell may only be colored in either white, red, green or yellow"),
-                Arguments.of("invalidDaySchedule", "An invalid day name has been detected"),
-                Arguments.of("invalidIntervalSchedule", "An invalid interval has been detected (only 8:00-19:00 accepted)"),
-                Arguments.of("missingDaySchedule", "The file does not contain all weekdays"),
-                Arguments.of("missingIntervalSchedule", "The file does not contain all 8:00-19:00 intervals")
+                arguments(named("A schedule cannot contain both an X and a color", "colorAndXSchedule")),
+                arguments(named("A schedule file must contain at least one busy interval", "emptySchedule")),
+                arguments(named("A cell may only contain a lowercase x", "invalidCellContentSchedule")),
+                arguments(named("A cell may only be colored in either white, red, green or yellow", "invalidColorSchedule")),
+                arguments(named("An invalid day name has been detected", "invalidDaySchedule")),
+                arguments(named("An invalid interval has been detected (only 8:00-19:00 accepted)", "invalidIntervalSchedule")),
+                arguments(named("The file does not contain all weekdays", "missingDaySchedule")),
+                arguments(named("The file does not contain all 8:00-19:00 intervals", "missingIntervalSchedule"))
         );
     }
 

@@ -31,12 +31,12 @@ class ExcelFileScheduleLoaderTest {
                 .isEqualTo(expectedSchedule);
     }
 
-    @ParameterizedTest(name = "InvalidExcelFile exception should be thrown when trying to open {0}.xlsx file")
+    @ParameterizedTest(name = "{0}")
     @MethodSource(value = "com.endava.tmd.soj.schedulematcher.service.ExcelTestDataGenerator#getInvalidTestData")
-    void appropriateExceptionsGetThrownForInvalidTestFiles(String fileName, String errorMessage) {
+    void appropriateExceptionsGetThrownForInvalidTestFiles(String fileName) {
         assertThatThrownBy(() -> scheduleLoader.loadSchedule(new FileInputStream(Utils.buildFilePath(Directory.INVALID, fileName))))
                 .isInstanceOf(InvalidExcelFileException.class)
-                .hasMessage(errorMessage);
+                .hasMessage("Invalid Excel schedule file");
     }
 
 }
