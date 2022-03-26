@@ -1,5 +1,7 @@
 package com.endava.tmd.soj.schedulematcher.model;
 
+import org.apache.commons.math3.geometry.euclidean.oned.Interval;
+
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -73,6 +75,19 @@ public class Schedule {
     private boolean isStartHourInMarkedInterval(TimeInterval markedInterval, TimeInterval timeInterval) {
         return timeInterval.getStart() >= markedInterval.getStart()
                && timeInterval.getStart() < markedInterval.getEnd();
+    }
+
+    /**
+     * @param day the day that needs to be checked for a busy interval
+     * @param interval the interval that we want to check whether it is busy for the given day or not
+     * @return true if the time interval has been marked as busy for the given day
+     */
+    public boolean hasIntervalBeenMarkedAsBusy(Day day, TimeInterval interval) {
+        var busyIntervals = busyTimeIntervals.get(day);
+        if (busyIntervals != null) {
+            return busyIntervals.contains(interval);
+        }
+        return false;
     }
 
     @Override

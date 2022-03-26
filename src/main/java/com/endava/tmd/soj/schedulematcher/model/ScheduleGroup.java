@@ -51,4 +51,20 @@ public class ScheduleGroup {
     public int getMaxSize() {
         return maxSize;
     }
+
+    /**
+     * @param day the day for which we want to get all busy time intervals from all group member schedules
+     * @return all busy time intervals from all group members for the given day
+     */
+    public List<TimeInterval> getAllBusyIntervalsForDay(Day day) {
+
+        List<TimeInterval> allBusyIntervals = new ArrayList<>();
+
+        for (Schedule schedule : getMemberSchedules()) {
+            var scheduleBusyIntervals = schedule.getBusyTimeIntervals(day);
+            scheduleBusyIntervals.ifPresent(allBusyIntervals::addAll);
+        }
+
+        return allBusyIntervals;
+    }
 }
