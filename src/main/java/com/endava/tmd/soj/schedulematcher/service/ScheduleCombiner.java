@@ -37,7 +37,7 @@ public class ScheduleCombiner {
                 /* For each time interval on MONDAY */
                 optionalTimeIntervalMonday.get().forEach(timeInterval -> {
 
-                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalMonday.get(), timeInterval))) {
+                    if (!(combinedSchedules.doTimeIntervalExists(Day.MONDAY, timeInterval))) {
                         combinedSchedules.addBusyTimeInterval(Day.MONDAY, timeInterval);
                         timeInterval.setIntervalColor(IntervalColor.YELLOW);
                     }else{
@@ -53,7 +53,7 @@ public class ScheduleCombiner {
 
                 /* For each time interval on TUESDAY */
                 optionalTimeIntervalTuesday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalTuesday.get(), timeInterval))) {
+                    if (!(combinedSchedules.doTimeIntervalExists(Day.TUESDAY, timeInterval))) {
                         combinedSchedules.addBusyTimeInterval(Day.TUESDAY, timeInterval);
                         timeInterval.setIntervalColor(IntervalColor.YELLOW);
                     }else{
@@ -69,7 +69,7 @@ public class ScheduleCombiner {
 
                 /* For each time interval on WEDNESDAY */
                 optionalTimeIntervalWednesday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalWednesday.get(), timeInterval))) {
+                    if (!(combinedSchedules.doTimeIntervalExists(Day.WEDNESDAY, timeInterval))) {
                         combinedSchedules.addBusyTimeInterval(Day.WEDNESDAY, timeInterval);
                         timeInterval.setIntervalColor(IntervalColor.YELLOW);
                     }else{
@@ -85,7 +85,7 @@ public class ScheduleCombiner {
 
                 /* For each time interval on THURSDAY */
                 optionalTimeIntervalThursday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalThursday.get(), timeInterval))) {
+                    if (!(combinedSchedules.doTimeIntervalExists(Day.THURSDAY, timeInterval))) {
                         combinedSchedules.addBusyTimeInterval(Day.THURSDAY, timeInterval);
                         timeInterval.setIntervalColor(IntervalColor.YELLOW);
                     }else{
@@ -101,7 +101,7 @@ public class ScheduleCombiner {
 
                 /* For each time interval on FRIDAY */
                 optionalTimeIntervalFriday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalFriday.get(), timeInterval))) {
+                    if (!(combinedSchedules.doTimeIntervalExists(Day.FRIDAY, timeInterval))) {
                         combinedSchedules.addBusyTimeInterval(Day.FRIDAY, timeInterval);
                         timeInterval.setIntervalColor(IntervalColor.YELLOW);
                     }else{
@@ -117,7 +117,7 @@ public class ScheduleCombiner {
 
                 /* For each time interval on SATURDAY */
                 optionalTimeIntervalSaturday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalSaturday.get(), timeInterval))) {
+                    if (!(combinedSchedules.doTimeIntervalExists(Day.SATURDAY, timeInterval))) {
                         combinedSchedules.addBusyTimeInterval(Day.SATURDAY, timeInterval);
                         timeInterval.setIntervalColor(IntervalColor.YELLOW);
                     }else{
@@ -133,7 +133,7 @@ public class ScheduleCombiner {
 
                 /* For each time interval on SUNDAY */
                 optionalTimeIntervalSunday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.isThereOverlapping(optionalTimeIntervalSunday.get(), timeInterval))) {
+                    if (!(combinedSchedules.doTimeIntervalExists(Day.SUNDAY, timeInterval))) {
                         combinedSchedules.addBusyTimeInterval(Day.SUNDAY, timeInterval);
                         timeInterval.setIntervalColor(IntervalColor.YELLOW);
                     }else{

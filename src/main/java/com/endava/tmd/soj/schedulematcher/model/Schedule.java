@@ -110,4 +110,19 @@ public class Schedule {
     public int hashCode() {
         return Objects.hash(busyTimeIntervals);
     }
+
+    public boolean doTimeIntervalExists(Day day, TimeInterval timeInterval) {
+
+        List<TimeInterval> intervals = busyTimeIntervals.get(day);
+
+        if(intervals == null){
+            return false;
+        }
+
+        if (intervals.contains(timeInterval)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
