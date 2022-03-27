@@ -102,8 +102,8 @@ public class ExcelTestDataGenerator {
                                 Day.SUNDAY, List.of(new TimeInterval(12, 13, IntervalColor.RED))))),
 
                 Arguments.of("multipleRedIntervalsSchedule", buildSchedule(
-                        Map.of(Day.FRIDAY, List.of(new TimeInterval(17, 18)),
-                                Day.SATURDAY, List.of(new TimeInterval(17, 18))))),
+                        Map.of(Day.FRIDAY, List.of(new TimeInterval(17, 18, IntervalColor.RED)),
+                                Day.SATURDAY, List.of(new TimeInterval(17, 18, IntervalColor.RED))))),
 
                 Arguments.of("multipleYellowIntervalsSchedule", buildSchedule(
                         Map.of(Day.FRIDAY, List.of(new TimeInterval(17, 18, IntervalColor.YELLOW)),
