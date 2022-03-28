@@ -103,6 +103,8 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
 
         boolean containsXs = false;
         boolean containsColors = false;
+
+        boolean containsGreens = false;
         for (Row row : sheet) {
             for (Cell cell : row) {
                 if (cell.getRowIndex() == 0)
@@ -127,6 +129,7 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
                 if (checkedColor != null) {
                     containsColors = true;
 
+
                     //fails with FillBackgroundColor
                     Color cellColor = cell.getCellStyle().getFillForegroundColorColor();
                     //String colorHex = (XSSFCell) cell.getCellStyle().getFillForegroundColorColor().;
@@ -135,6 +138,9 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
                     //if-clause for different colors
                     if (matchIntervalColor(colorHex) == null)
                         throw new InvalidExcelFileException(INVALID_EXCEL_FILE_EXCEPTION_MESSAGE);
+                    else if (matchIntervalColor(colorHex) == IntervalColor.GREEN) {
+                        containsGreens = true;
+                    }
 
                 }
 
@@ -164,8 +170,13 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
         }
 
         //checks if schedule file is empty OR contains green cells only
+        if (excelCellsList.isEmpty() && containsGreens)
+            return new Schedule();
+
         if (excelCellsList.isEmpty() && !containsColors)
             throw new InvalidExcelFileException(INVALID_EXCEL_FILE_EXCEPTION_MESSAGE);
+
+
 
         return processExcelCellsList(excelCellsList, containsXs, containsColors);
     }
@@ -246,8 +257,10 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
 
         if (containsXs)
             excelCell.setContent(cell.getStringCellValue());
-        else
-            excelCell.setColorHex(((XSSFColor) cell.getCellStyle().getFillBackgroundColorColor()).getARGBHex());
+
+        //TODO: writers fails because of below, also redundant in upper method (check if clause)
+//        else
+//            excelCell.setColorHex(((XSSFColor) cell.getCellStyle().getFillBackgroundColorColor()).getARGBHex());
 
         return excelCell;
     }
