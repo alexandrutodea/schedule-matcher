@@ -67,4 +67,12 @@ public class ScheduleGroup {
 
         return allBusyIntervals;
     }
+
+    /**
+     * @return true if the maximum number of members has been reached
+     */
+    public boolean hasMaxSizeBeenReached() {
+        return memberSchedules.size() == maxSize;
+    }
+
 }

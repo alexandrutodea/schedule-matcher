@@ -22,10 +22,15 @@ public class ScheduleCombiner {
      * availability in the time interval
      * @param scheduleGroup the {@link ScheduleGroup} that we want to merge
      * @return a merged schedule of all schedules in the {@link ScheduleGroup}
+     * @throws IllegalArgumentException if the given {@link ScheduleGroup} has not reached its maximum size
      * @see com.endava.tmd.soj.schedulematcher.model.IntervalColor
      * @see ScheduleGroup
      */
     public static Schedule getCombinedSchedule(ScheduleGroup scheduleGroup) {
+
+        if (!scheduleGroup.hasMaxSizeBeenReached()) {
+            throw new IllegalArgumentException("The schedule group has not reached its maximum size");
+        }
 
         var combined = new Schedule();
 

@@ -4,11 +4,9 @@ import com.endava.tmd.soj.schedulematcher.model.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.provider.Arguments;
-
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("Tests for the Schedule Combiner service")
 class ScheduleCombinerTest {
@@ -22,6 +20,17 @@ class ScheduleCombinerTest {
         personBusyOnMondaySchedule.addBusyTimeInterval(Day.MONDAY, new TimeInterval(15, 16));
         personBusyOnTuesdaySchedule.addBusyTimeInterval(Day.TUESDAY, new TimeInterval(17, 18));
         personBusyOnFridaySchedule.addBusyTimeInterval(Day.FRIDAY, new TimeInterval(12, 13));
+    }
+
+    @Test
+    @DisplayName("An exception gets throw if the given ScheduleGroup has not reached its maximum sized")
+    void exceptionGetsThrownIfScheduleGroupHasNotReachedMaxSize() {
+        var scheduleGroup = new ScheduleGroup(3);
+        scheduleGroup.addMemberSchedule(personBusyOnMondaySchedule);
+        scheduleGroup.addMemberSchedule(personBusyOnTuesdaySchedule);
+        assertThatThrownBy(() -> ScheduleCombiner.getCombinedSchedule(scheduleGroup))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("The schedule group has not reached its maximum size");
     }
 
     @Test
