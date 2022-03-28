@@ -1,7 +1,6 @@
 package com.endava.tmd.soj.schedulematcher.service;
 
 import com.endava.tmd.soj.schedulematcher.model.*;
-import org.apache.commons.math3.geometry.euclidean.oned.Interval;
 
 import java.util.ArrayList;
 import java.util.List;
