@@ -1,6 +1,10 @@
 package com.endava.tmd.soj.schedulematcher.model;
 
+/**
+ * The {@code ExcelCell} class represents an entity that holds information about the cell to be created within the Excel file.
+ */
 public class ExcelCell {
+
     private int rowIndex;
     private int columnIndex;
     private String content;
@@ -8,7 +12,6 @@ public class ExcelCell {
 
     public ExcelCell() {
     }
-
 
     public int getRowIndex() {
         return rowIndex;
