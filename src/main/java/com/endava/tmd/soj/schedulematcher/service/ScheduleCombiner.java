@@ -29,121 +29,34 @@ public class ScheduleCombiner {
 
         scheduleList.forEach(schedule -> {
 
-            final Optional<List<TimeInterval>> optionalTimeIntervalMonday = schedule.getBusyTimeIntervals(Day.MONDAY);
-
-            /* If any schedule is present on MONDAY */
-            if (optionalTimeIntervalMonday.isPresent()) {
-
-                /* For each time interval on MONDAY */
-                optionalTimeIntervalMonday.get().forEach(timeInterval -> {
-
-                    if (!(combinedSchedules.doTimeIntervalExists(Day.MONDAY, timeInterval))) {
-                        combinedSchedules.addBusyTimeInterval(Day.MONDAY, timeInterval);
-                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
-                    }else{
-                        timeInterval.setIntervalColor(IntervalColor.RED);
-                    }
-                });
+            for (Day day : Day.values()) {
+                addToCombineSchedule(schedule, day, combinedSchedules);
             }
-
-            final Optional<List<TimeInterval>> optionalTimeIntervalTuesday = schedule.getBusyTimeIntervals(Day.TUESDAY);
-
-            /* If any schedule is present on TUESDAY */
-            if (optionalTimeIntervalTuesday.isPresent()) {
-
-                /* For each time interval on TUESDAY */
-                optionalTimeIntervalTuesday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.doTimeIntervalExists(Day.TUESDAY, timeInterval))) {
-                        combinedSchedules.addBusyTimeInterval(Day.TUESDAY, timeInterval);
-                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
-                    }else{
-                        timeInterval.setIntervalColor(IntervalColor.RED);
-                    }
-                });
-            }
-
-            final Optional<List<TimeInterval>> optionalTimeIntervalWednesday = schedule.getBusyTimeIntervals(Day.WEDNESDAY);
-
-            /* If any schedule is present on WEDNESDAY */
-            if (optionalTimeIntervalWednesday.isPresent()) {
-
-                /* For each time interval on WEDNESDAY */
-                optionalTimeIntervalWednesday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.doTimeIntervalExists(Day.WEDNESDAY, timeInterval))) {
-                        combinedSchedules.addBusyTimeInterval(Day.WEDNESDAY, timeInterval);
-                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
-                    }else{
-                        timeInterval.setIntervalColor(IntervalColor.RED);
-                    }
-                });
-            }
-
-            final Optional<List<TimeInterval>> optionalTimeIntervalThursday = schedule.getBusyTimeIntervals(Day.THURSDAY);
-
-            /* If any schedule is present on THURSDAY */
-            if (optionalTimeIntervalThursday.isPresent()) {
-
-                /* For each time interval on THURSDAY */
-                optionalTimeIntervalThursday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.doTimeIntervalExists(Day.THURSDAY, timeInterval))) {
-                        combinedSchedules.addBusyTimeInterval(Day.THURSDAY, timeInterval);
-                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
-                    }else{
-                        timeInterval.setIntervalColor(IntervalColor.RED);
-                    }
-                });
-            }
-
-            final Optional<List<TimeInterval>> optionalTimeIntervalFriday = schedule.getBusyTimeIntervals(Day.FRIDAY);
-
-            /* If any schedule is present on FRIDAY */
-            if (optionalTimeIntervalFriday.isPresent()) {
-
-                /* For each time interval on FRIDAY */
-                optionalTimeIntervalFriday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.doTimeIntervalExists(Day.FRIDAY, timeInterval))) {
-                        combinedSchedules.addBusyTimeInterval(Day.FRIDAY, timeInterval);
-                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
-                    }else{
-                        timeInterval.setIntervalColor(IntervalColor.RED);
-                    }
-                });
-            }
-
-            final Optional<List<TimeInterval>> optionalTimeIntervalSaturday = schedule.getBusyTimeIntervals(Day.SATURDAY);
-
-            /* If any schedule is present on SATURDAY */
-            if (optionalTimeIntervalSaturday.isPresent()) {
-
-                /* For each time interval on SATURDAY */
-                optionalTimeIntervalSaturday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.doTimeIntervalExists(Day.SATURDAY, timeInterval))) {
-                        combinedSchedules.addBusyTimeInterval(Day.SATURDAY, timeInterval);
-                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
-                    }else{
-                        timeInterval.setIntervalColor(IntervalColor.RED);
-                    }
-                });
-            }
-
-            final Optional<List<TimeInterval>> optionalTimeIntervalSunday = schedule.getBusyTimeIntervals(Day.SUNDAY);
-
-            /* If any schedule is present on SUNDAY */
-            if (optionalTimeIntervalSunday.isPresent()) {
-
-                /* For each time interval on SUNDAY */
-                optionalTimeIntervalSunday.get().forEach(timeInterval -> {
-                    if (!(combinedSchedules.doTimeIntervalExists(Day.SUNDAY, timeInterval))) {
-                        combinedSchedules.addBusyTimeInterval(Day.SUNDAY, timeInterval);
-                        timeInterval.setIntervalColor(IntervalColor.YELLOW);
-                    }else{
-                        timeInterval.setIntervalColor(IntervalColor.RED);
-                    }
-                });
-            }
-
         });
 
         return combinedSchedules;
+    }
+
+    /**
+    * @param scheduleToBeAdded
+    */
+    private static void addToCombineSchedule(Schedule scheduleToBeAdded, Day day, Schedule combinedSchedules){
+
+        final Optional<List<TimeInterval>> optionalTimeIntervalMonday = scheduleToBeAdded.getBusyTimeIntervals(day);
+
+        /* If any schedule is present on MONDAY */
+        if (optionalTimeIntervalMonday.isPresent()) {
+
+            /* For each time interval on MONDAY */
+            optionalTimeIntervalMonday.get().forEach(timeInterval -> {
+
+                if (!(combinedSchedules.doTimeIntervalExists(day, timeInterval))) {
+                    combinedSchedules.addBusyTimeInterval(day, timeInterval);
+                    timeInterval.setIntervalColor(IntervalColor.YELLOW);
+                }else{
+                    timeInterval.setIntervalColor(IntervalColor.RED);
+                }
+            });
+        }
     }
 }
