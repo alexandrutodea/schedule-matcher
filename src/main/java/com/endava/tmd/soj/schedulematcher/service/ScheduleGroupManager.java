@@ -60,11 +60,11 @@ public class ScheduleGroupManager {
 
     /**
      * Returns a combined schedule of all schedules in the schedule group with the given identifier
-     * @param groupID the group ID for the {@link ScheduleGroup} for which the method need to combine all schedules
+     * @param groupID the group ID for the {@link ScheduleGroup} for which the method needs to combine all schedules
      * @return a combined schedule of all schedules in the schedule group
      * @see ScheduleCombiner
      */
-    Schedule getCombinedSchedule(String groupID) {
+    public Schedule getCombinedSchedule(String groupID) {
         return ScheduleCombiner.getCombinedSchedule(groups.get(groupID));
     }
 
@@ -72,7 +72,7 @@ public class ScheduleGroupManager {
      * @param groupID the ID of the {@link ScheduleGroup} that needs to be returned
      * @return the {@link ScheduleGroup} with the given group ID if it exists, otherwise an empty Optional
      */
-    public Optional<ScheduleGroup> getGroup(String groupID) {
+    Optional<ScheduleGroup> getGroup(String groupID) {
         if (!groups.containsKey(groupID)) {
             return Optional.empty();
         }
