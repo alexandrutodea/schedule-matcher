@@ -34,8 +34,11 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
     }
 
 
-
-
+    /**
+     * Checks if the input document follows the expected template - i.e., the Monday-Sunday headers and the predefined time intervals.
+     * @param workbook Excel document received as input.
+     * @return <code>true</code> or <code>throws</code> {@link InvalidExcelFileException}.
+     */
     private boolean formatIsValid(XSSFWorkbook workbook) {
         XSSFSheet sheet = workbook.getSheetAt(0);
 
@@ -76,8 +79,12 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
     }
 
 
-
-
+    /**
+     * Iterates through the Excel document and scans its cells
+     * in order to construct a {@link Schedule} object.
+     * @param workbook Excel document received as input.
+     * @return {@link Schedule} object that mirrors the input file.
+     */
     private Schedule buildSchedule(XSSFWorkbook workbook) {
         XSSFSheet sheet = workbook.getSheetAt(0);
         List<ExcelCell> excelCellsList = new ArrayList<>();
@@ -137,8 +144,12 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
     }
 
 
-
-
+    /**
+     * Verifies if the fill foreground color of the specific cell
+     * matches with one of the predefined colors of {@link IntervalColor}.
+     * @param cellColorARGBHex ARGB value in hex string format of the cell's fill foreground color
+     * @return {@link IntervalColor} value
+     */
     private IntervalColor matchIntervalColor(String cellColorARGBHex) {
         String cellColorHex = null;
         if (cellColorARGBHex != null)
@@ -156,8 +167,13 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
     }
 
 
-
-
+    /**
+     * Constructs the {@link ExcelCell} object to be later processed into {@link Schedule}.
+     * @param cell {@link Cell} object to be processed into {@link ExcelCell}
+     * @param containsXs <code>boolean</code> object representing whether the input file
+     *                   contains 'x'-marked intervals
+     * @return {@link ExcelCell} object
+     */
     private ExcelCell buildExcelCell(Cell cell, boolean containsXs) {
         ExcelCell excelCell = new ExcelCell();
 
@@ -180,8 +196,15 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
     }
 
 
-
-
+    /**
+     * Constructs the final {@link Schedule} object
+     * @param list {@link List} of {@link ExcelCell} objects to be processed into the final {@link Schedule} object.
+     * @param containsXs <code>boolean</code> object representing whether the input file
+     *                    contains 'x'-marked intervals
+     * @param containsColors <code>boolean</code> object representing whether the input file
+     *                       contains intervals marked with colors
+     * @return the final {@link Schedule} object
+     */
     private Schedule processExcelCellsList(List<ExcelCell> list, boolean containsXs, boolean containsColors) {
         Schedule schedule = new Schedule();
 

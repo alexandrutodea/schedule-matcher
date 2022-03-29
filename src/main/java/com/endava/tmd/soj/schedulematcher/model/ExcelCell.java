@@ -1,7 +1,7 @@
 package com.endava.tmd.soj.schedulematcher.model;
 
 /**
- * The {@code ExcelCell} class represents an entity that holds information about the cell to be created within the Excel file.
+ * The {@code ExcelCell} class is an entity that holds information about the cell to be read from the Excel file.
  */
 public class ExcelCell {
 

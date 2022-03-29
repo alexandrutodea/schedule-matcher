@@ -37,8 +37,11 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
     }
 
 
-
-
+    /**
+     * Exports the {@link Schedule} object to the Excel document.
+     * @param schedule {@link Schedule}
+     * @param workbook output Excel file
+     */
     private void exportSchedule(Schedule schedule, Workbook workbook){
         XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(0);
 
@@ -62,8 +65,10 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
     }
 
 
-
-
+    /**
+     * Adds the predefined header and time intervals to the output Excel file.
+     * @param workbook output Excel document
+     */
     private void addTemplate(Workbook workbook) {
         Sheet sheet = workbook.createSheet();
         Row row = sheet.createRow(0);
@@ -84,8 +89,12 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
     }
 
 
-
-
+    /**
+     * Converts an {@link IntervalColor} into a {@link XSSFColor},
+     * to be applied to {@link CellStyle} object.
+     * @param intervalColor {@link IntervalColor} object
+     * @return {@link XSSFColor} object
+     */
     private XSSFColor getXSSFIntervalColor(IntervalColor intervalColor) {
         XSSFColor color = new XSSFColor();
 
@@ -100,8 +109,11 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
     }
 
 
-
-
+    /**
+     * Fills the interval cells in the output Excel file in {@link IntervalColor}.GREEN,
+     * mirroring an empty {@link Schedule} object.
+     * @param workbook output Excel file
+     */
     private void exportEmptySchedule(Workbook workbook) {
         Sheet sheet = workbook.getSheetAt(0);
 
