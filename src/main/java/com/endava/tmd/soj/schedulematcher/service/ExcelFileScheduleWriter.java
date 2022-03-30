@@ -18,7 +18,7 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
     public void writeSchedule(OutputStream outputStream, Schedule schedule) {
 
         try {
-            Workbook workbook = new XSSFWorkbook();
+            var workbook = new XSSFWorkbook();
 
             addTemplate(workbook);
 
@@ -43,7 +43,7 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
      * @param workbook output Excel file
      */
     private void exportSchedule(Schedule schedule, Workbook workbook){
-        XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(0);
+        var sheet = (XSSFSheet) workbook.getSheetAt(0);
 
         for (int i = 1; i < 8; i++) {
             if (schedule.getBusyTimeIntervals(days[i - 1]).isEmpty())
@@ -51,10 +51,10 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
 
             List<TimeInterval> timeIntervals = schedule.getBusyTimeIntervals(days[i - 1]).get();
 
-            for (TimeInterval timeInterval : timeIntervals) {
-                XSSFRow row = sheet.getRow(timeInterval.getStart() - 7);
-                XSSFCell cell = row.createCell(i);
-                XSSFCellStyle cellStyle = (XSSFCellStyle) workbook.createCellStyle();
+            for (var timeInterval : timeIntervals) {
+                var row = sheet.getRow(timeInterval.getStart() - 7);
+                var cell = row.createCell(i);
+                var cellStyle = (XSSFCellStyle) workbook.createCellStyle();
 
                 cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
                 cellStyle.setFillForegroundColor(getXSSFIntervalColor(timeInterval.getIntervalColor()));
@@ -70,8 +70,8 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
      * @param workbook output Excel document
      */
     private void addTemplate(Workbook workbook) {
-        Sheet sheet = workbook.createSheet();
-        Row row = sheet.createRow(0);
+        var sheet = workbook.createSheet();
+        var row = sheet.createRow(0);
 
         row.createCell(1).setCellValue("Monday");
         row.createCell(2).setCellValue("Tuesday");
@@ -83,7 +83,7 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
 
         for (int i = 1; i < 12; i++) {
             row = sheet.createRow(i);
-            String interval = (i + 7) + ":00 - " + (i + 8) + ":00";
+            var interval = (i + 7) + ":00 - " + (i + 8) + ":00";
             row.createCell(0).setCellValue(interval);
         }
     }
@@ -96,7 +96,7 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
      * @return {@link XSSFColor} object
      */
     private XSSFColor getXSSFIntervalColor(IntervalColor intervalColor) {
-        XSSFColor color = new XSSFColor();
+        var color = new XSSFColor();
 
         switch (intervalColor) {
             case RED -> color.setARGBHex("FF0000");
@@ -115,14 +115,14 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
      * @param workbook output Excel file
      */
     private void exportEmptySchedule(Workbook workbook) {
-        Sheet sheet = workbook.getSheetAt(0);
+        var sheet = workbook.getSheetAt(0);
 
             for (int i = 1; i < 12; i++) {
-                Row row = sheet.getRow(i);
+                var row = sheet.getRow(i);
 
                 for (int j = 1; j < 8; j++) {
-                    Cell cell = row.createCell(j);
-                    XSSFCellStyle cellStyle = (XSSFCellStyle) workbook.createCellStyle();
+                    var cell = row.createCell(j);
+                    var cellStyle = (XSSFCellStyle) workbook.createCellStyle();
 
                     cellStyle.setFillForegroundColor(getXSSFIntervalColor(IntervalColor.GREEN));
                     cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);

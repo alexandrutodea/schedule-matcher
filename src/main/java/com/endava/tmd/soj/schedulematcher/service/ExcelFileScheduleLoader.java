@@ -3,8 +3,6 @@ package com.endava.tmd.soj.schedulematcher.service;
 import com.endava.tmd.soj.schedulematcher.exception.InvalidExcelFileException;
 import com.endava.tmd.soj.schedulematcher.model.*;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Color;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.io.FileInputStream;
@@ -22,7 +20,7 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
     @Override
     public Schedule loadSchedule(InputStream inputStream) {
 
-        try(XSSFWorkbook workbook = new XSSFWorkbook(inputStream)) {
+        try(var workbook = new XSSFWorkbook(inputStream)) {
             if (formatIsValid(workbook))
                     return buildSchedule(workbook);
 
@@ -40,18 +38,18 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
      * @return <code>true</code> or <code>throws</code> {@link InvalidExcelFileException}.
      */
     private boolean formatIsValid(XSSFWorkbook workbook) {
-        XSSFSheet sheet = workbook.getSheetAt(0);
+        var sheet = workbook.getSheetAt(0);
 
-        try(XSSFWorkbook templateWorkbook = new XSSFWorkbook(new FileInputStream("src/main/resources/com/endava/tmd/soj/scheduleTemplate.xlsx"))) {
-            XSSFRow row = sheet.getRow(0);
+        try(var templateWorkbook = new XSSFWorkbook(new FileInputStream("src/main/resources/com/endava/tmd/soj/scheduleTemplate.xlsx"))) {
+            var row = sheet.getRow(0);
 
-            XSSFSheet templateSheet = templateWorkbook.getSheetAt(0);
-            XSSFRow templateRow = templateSheet.getRow(0);
+            var templateSheet = templateWorkbook.getSheetAt(0);
+            var templateRow = templateSheet.getRow(0);
 
 
             for (int i = 1; i < 8; i++) {
-                XSSFCell cell = row.getCell(i);
-                XSSFCell templateCell = templateRow.getCell(i);
+                var cell = row.getCell(i);
+                var templateCell = templateRow.getCell(i);
 
                 if (!cell.getStringCellValue().equals(templateCell.getStringCellValue()))
                     throw new InvalidExcelFileException(INVALID_EXCEL_FILE_EXCEPTION_MESSAGE);
@@ -62,8 +60,8 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
                 row = sheet.getRow(i);
                 templateRow = templateSheet.getRow(i);
 
-                XSSFCell cell = row.getCell(0);
-                XSSFCell templateCell = templateRow.getCell(0);
+                var cell = row.getCell(0);
+                var templateCell = templateRow.getCell(0);
 
                 if (!cell.getStringCellValue().equals(templateCell.getStringCellValue()))
                     throw new InvalidExcelFileException(INVALID_EXCEL_FILE_EXCEPTION_MESSAGE);
@@ -86,15 +84,15 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
      * @return {@link Schedule} object that mirrors the input file.
      */
     private Schedule buildSchedule(XSSFWorkbook workbook) {
-        XSSFSheet sheet = workbook.getSheetAt(0);
+        var sheet = workbook.getSheetAt(0);
         List<ExcelCell> excelCellsList = new ArrayList<>();
 
-        boolean containsXs = false;
-        boolean containsColors = false;
-        boolean containsGreens = false;
+        var containsXs = false;
+        var containsColors = false;
+        var containsGreens = false;
 
-        for (Row row : sheet) {
-            for (Cell cell : row) {
+        for (var row : sheet) {
+            for (var cell : row) {
                 if (cell.getRowIndex() == 0)
                     break;
 
@@ -108,7 +106,7 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
                     throw new InvalidExcelFileException(INVALID_EXCEL_FILE_EXCEPTION_MESSAGE);
 
 
-                Color cellColor = cell.getCellStyle().getFillForegroundColorColor();
+                var cellColor = cell.getCellStyle().getFillForegroundColorColor();
                 if (cellColor != null) {
                     containsColors = true;
 
@@ -122,11 +120,11 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
                     throw new InvalidExcelFileException(INVALID_EXCEL_FILE_EXCEPTION_MESSAGE);
                 }
                 else if (containsXs) {
-                    ExcelCell excelCell = buildExcelCell(cell, true);
+                    var excelCell = buildExcelCell(cell, true);
                     excelCellsList.add(excelCell);
                 }
                 else if (containsColors) {
-                    ExcelCell excelCell = buildExcelCell(cell, false);
+                    var excelCell = buildExcelCell(cell, false);
                     excelCellsList.add(excelCell);
                 }
             }
@@ -151,16 +149,17 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
      * @return {@link IntervalColor} value
      */
     private IntervalColor matchIntervalColor(String cellColorARGBHex) {
-        String cellColorHex = null;
-        if (cellColorARGBHex != null)
+        var cellColorHex = "";
+        if (cellColorARGBHex != null) {
             cellColorHex = "#" + cellColorARGBHex.substring(2);
 
-        IntervalColor[] intervalColors = IntervalColor.values();
+            IntervalColor[] intervalColors = IntervalColor.values();
 
-        for (IntervalColor intervalColor : intervalColors) {
-            String intervalColorHex = intervalColor.getCode();
-            if (intervalColorHex.equals(cellColorHex))
-                return intervalColor;
+            for (var intervalColor : intervalColors) {
+                var intervalColorHex = intervalColor.getCode();
+                if (intervalColorHex.equals(cellColorHex))
+                    return intervalColor;
+            }
         }
 
         throw new InvalidExcelFileException(INVALID_EXCEL_FILE_EXCEPTION_MESSAGE);
@@ -175,7 +174,7 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
      * @return {@link ExcelCell} object
      */
     private ExcelCell buildExcelCell(Cell cell, boolean containsXs) {
-        ExcelCell excelCell = new ExcelCell();
+        var excelCell = new ExcelCell();
 
         excelCell.setRowIndex(cell.getRowIndex());
         excelCell.setColumnIndex(cell.getColumnIndex());
@@ -183,7 +182,7 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
         if (containsXs)
             excelCell.setContent(cell.getStringCellValue());
         else {
-            String colorHex = ((XSSFColor) cell.getCellStyle().getFillForegroundColorColor()).getARGBHex();
+            var colorHex = ((XSSFColor) cell.getCellStyle().getFillForegroundColorColor()).getARGBHex();
 
             if (matchIntervalColor(colorHex) == IntervalColor.YELLOW) {
                 excelCell.setColorHex(IntervalColor.YELLOW.getCode());
@@ -206,12 +205,12 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
      * @return the final {@link Schedule} object
      */
     private Schedule processExcelCellsList(List<ExcelCell> list, boolean containsXs, boolean containsColors) {
-        Schedule schedule = new Schedule();
+        var schedule = new Schedule();
 
-        for (ExcelCell cell : list) {
-            Day day = days[cell.getColumnIndex() - 1];
+        for (var cell : list) {
+            var day = days[cell.getColumnIndex() - 1];
 
-            IntervalColor color = IntervalColor.GREEN;
+            var color = IntervalColor.GREEN;
 
             if (containsXs)
                 color = IntervalColor.WHITE;
@@ -224,7 +223,7 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
             }
             else continue;
 
-            TimeInterval timeInterval = new TimeInterval(cell.getRowIndex() + 7, cell.getRowIndex() + 8, color);
+            var timeInterval = new TimeInterval(cell.getRowIndex() + 7, cell.getRowIndex() + 8, color);
 
             schedule.addBusyTimeInterval(day, timeInterval);
         }
