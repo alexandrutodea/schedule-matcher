@@ -1,21 +1,38 @@
 package com.endava.tmd.soj.schedulematcher.client;
 
-import com.endava.tmd.soj.schedulematcher.service.ScheduleLoader;
-import com.endava.tmd.soj.schedulematcher.service.ScheduleWriter;
-import com.endava.tmd.soj.schedulematcher.service.TemplateFileDownloader;
+import com.endava.tmd.soj.schedulematcher.service.ScreenController;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
-public class ClientApplication {
-    private ScheduleLoader scheduleLoader;
-    private ScheduleWriter scheduleWriter;
-    private TemplateFileDownloader templateFileDownloader;
+import java.io.IOException;
 
-    public ClientApplication(ScheduleLoader scheduleLoader, ScheduleWriter scheduleWriter, TemplateFileDownloader templateFileDownloader) {
-        this.scheduleLoader = scheduleLoader;
-        this.scheduleWriter = scheduleWriter;
-        this.templateFileDownloader = templateFileDownloader;
+public class ClientApplication extends Application {
+
+    private static String groupCode;
+    private static BorderPane root;
+
+    @Override
+    public void start(Stage window) throws IOException {
+        groupCode = "";
+        root = new BorderPane();
+        var main = new Scene(root);
+        window.setScene(main);
+        ScreenController.displayScreen("select-file");
+        window.setTitle("Schedule Matcher");
+        window.show();
     }
 
-    public void run() {
-        throw new UnsupportedOperationException();
+    public static void main(String[] args) {
+        launch(com.endava.tmd.soj.schedulematcher.client.ClientApplication.class);
+    }
+
+    public static String getGroupCode() {
+        return groupCode;
+    }
+
+    public static BorderPane getRoot() {
+        return root;
     }
 }
