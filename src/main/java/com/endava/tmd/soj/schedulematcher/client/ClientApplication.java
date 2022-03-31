@@ -19,7 +19,7 @@ public class ClientApplication extends Application {
         root = new BorderPane();
         var main = new Scene(root);
         window.setScene(main);
-        ScreenController.displayScreen("select-file");
+        ScreenController.displayScreen("main-menu");
         window.setTitle("Schedule Matcher");
         window.show();
     }
