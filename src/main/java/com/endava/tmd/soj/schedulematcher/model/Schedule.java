@@ -1,5 +1,6 @@
 package com.endava.tmd.soj.schedulematcher.model;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -7,7 +8,7 @@ import java.util.*;
  * For each day of the week, it keeps track of the time intervals in which the person is busy
  */
 
-public class Schedule {
+public class Schedule implements Serializable {
 
     private final Map<Day, List<TimeInterval>> busyTimeIntervals;
 
