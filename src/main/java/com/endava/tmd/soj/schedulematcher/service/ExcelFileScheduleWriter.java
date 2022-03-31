@@ -14,6 +14,11 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
 
     public static final Day[] days = Day.values();
 
+    /**
+     * Main method that writes a {@link Schedule} instance to an {@link OutputStream}.
+     * @param outputStream {@link OutputStream} object
+     * @param schedule {@link Schedule} object
+     */
     @Override
     public void writeSchedule(OutputStream outputStream, Schedule schedule) {
 
