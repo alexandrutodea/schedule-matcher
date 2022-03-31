@@ -13,7 +13,7 @@ import java.util.Optional;
  * It identifies {@link ScheduleGroup} instances by a unique 6-character string.
  */
 public class ScheduleGroupManager {
-    private Map<String, ScheduleGroup> groups;
+    private final Map<String, ScheduleGroup> groups;
 
     public ScheduleGroupManager() {
         this.groups = new HashMap<>();

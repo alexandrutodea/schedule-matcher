@@ -113,7 +113,7 @@ public class Schedule {
     @Override
     public String toString() {
         return "Schedule{" +
-               "busyTimeIntervals=" + busyTimeIntervals.toString() +
+               "busyTimeIntervals=" + busyTimeIntervals +
                '}';
     }
 

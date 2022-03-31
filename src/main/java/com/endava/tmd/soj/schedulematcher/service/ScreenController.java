@@ -22,48 +22,14 @@ public class ScreenController {
         }
 
         switch (screenIdentifier) {
-
-            case "waiting" -> {
-                Parent waitingScreen = WaitingScreen.getView();
-                saveAndDisplay(screenIdentifier, waitingScreen);
-            }
-
-            case "group-created" -> {
-                Parent groupCreatedScreen = GroupCreatedScreen.getView();
-                saveAndDisplay(screenIdentifier, groupCreatedScreen);
-            }
-
-            case "join-group" -> {
-                var joinGroupScreen = JoinGroupScreen.getView();
-                saveAndDisplay(screenIdentifier, joinGroupScreen);
-            }
-
-            case "download-template" -> {
-                var downloadTemplateScreen = DownloadTemplateScreen.getScreen();
-                saveAndDisplay(screenIdentifier, downloadTemplateScreen);
-            }
-
-            case "combined-schedule" -> {
-                var combinedScheduleScreen = CombinedScheduleScreen.getScreen();
-                saveAndDisplay(screenIdentifier, combinedScheduleScreen);
-            }
-
-            case "main-menu" -> {
-                var mainMenuScreen = MainMenuScreen.getScreen();
-                saveAndDisplay(screenIdentifier, mainMenuScreen);
-
-            }
-
-            case "create-group" -> {
-                var createGroupScreen = CreateGroupScreen.getScreen();
-                saveAndDisplay(screenIdentifier, createGroupScreen);
-            }
-
-            case "select-file" -> {
-                var selectFileScreen = SelectFileScreen.getScreen();
-                saveAndDisplay(screenIdentifier, selectFileScreen);
-            }
-
+            case "waiting" -> saveAndDisplay(screenIdentifier, WaitingScreen.getView());
+            case "group-created" -> saveAndDisplay(screenIdentifier, GroupCreatedScreen.getView());
+            case "join-group" -> saveAndDisplay(screenIdentifier, JoinGroupScreen.getView());
+            case "download-template" -> saveAndDisplay(screenIdentifier, DownloadTemplateScreen.getScreen());
+            case "combined-schedule" -> saveAndDisplay(screenIdentifier,  CombinedScheduleScreen.getScreen());
+            case "main-menu" -> saveAndDisplay(screenIdentifier, MainMenuScreen.getScreen());
+            case "create-group" -> saveAndDisplay(screenIdentifier, CreateGroupScreen.getScreen());
+            case "select-file" -> saveAndDisplay(screenIdentifier, SelectFileScreen.getScreen());
             default -> throw new IllegalArgumentException("Invalid scene identifier");
         }
 

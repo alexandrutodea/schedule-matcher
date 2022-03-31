@@ -16,18 +16,26 @@ public class JoinGroupScreen {
     }
 
     public static Parent getView() {
+        var gridPaneBuilder = new GridPaneBuilder(400, 300, 20);
+
         TextField groupCodeInputField = new TextField();
         groupCodeInputField.setText(ClientApplication.getGroupCode());
+
         var join = new Button("Join");
         join.setPrefSize(125, 25);
+
         var cancel = new Button("Cancel");
         cancel.setMaxSize(125, 25);
+
         var error = new Label("");
         error.setTextFill(Color.valueOf("red"));
+
+        join.setOnAction(e -> {});
         cancel.setOnAction(e -> ScreenController.displayScreen("main-menu"));
-        var gridPaneBuilder = new GridPaneBuilder(400, 300, 20);
+
         gridPaneBuilder.addComponents(new Label("Enter group code:"),
                 groupCodeInputField, join, cancel, error);
+
         return gridPaneBuilder.getGridPane();
     }
 

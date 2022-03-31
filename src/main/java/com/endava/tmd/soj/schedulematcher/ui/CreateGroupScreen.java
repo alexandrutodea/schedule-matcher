@@ -1,6 +1,7 @@
 package com.endava.tmd.soj.schedulematcher.ui;
 
 import com.endava.tmd.soj.schedulematcher.service.GridPaneBuilder;
+import com.endava.tmd.soj.schedulematcher.service.ScreenController;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -16,6 +17,7 @@ public class CreateGroupScreen {
     }
 
     public static Parent getScreen() {
+        var gridPaneBuilder = new GridPaneBuilder(400, 300, 20);
         var create = new Label("Create group");
         var flow = new TextFlow();
         flow.setTextAlignment(TextAlignment.CENTER);
@@ -25,7 +27,6 @@ public class CreateGroupScreen {
 
         flow.getChildren().addAll(create, sizeText, groupSize);
 
-        var gridPaneBuilder = new GridPaneBuilder(400, 300, 20);
         var createGroup = new Button("Create group");
         createGroup.setPrefSize(125, 25);
 
@@ -39,23 +40,29 @@ public class CreateGroupScreen {
         var minus = new Button("-");
         minus.setDisable(true);
 
+        createGroup.setOnAction(e -> {});
+
         plus.setOnAction(e -> {
             groupSize.setText(String.valueOf(Integer.parseInt(groupSize.getText()) + 1));
+            if (Integer.parseInt(groupSize.getText()) == 10) {
+                plus.setDisable(true);
+            }
             minus.setDisable(false);
         });
 
         minus.setOnAction(e -> {
+            plus.setDisable(false);
             groupSize.setText(String.valueOf(Integer.parseInt(groupSize.getText()) - 1));
-
             if (Integer.parseInt(groupSize.getText()) == 2) {
                 minus.setDisable(true);
             }
         });
 
+        cancel.setOnAction(e -> ScreenController.displayScreen("main-menu"));
+
         buttons.add(minus, 0, 0);
         buttons.add(plus, 1, 0);
         gridPaneBuilder.addComponents(create, flow, buttons, createGroup, cancel);
-
         return gridPaneBuilder.getGridPane();
     }
 

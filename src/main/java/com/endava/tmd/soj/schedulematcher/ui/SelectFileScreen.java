@@ -1,6 +1,7 @@
 package com.endava.tmd.soj.schedulematcher.ui;
 
 import com.endava.tmd.soj.schedulematcher.service.GridPaneBuilder;
+import com.endava.tmd.soj.schedulematcher.service.ScreenController;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,6 +42,11 @@ public class SelectFileScreen {
         selectFile.setPrefSize(125, 25);
 
         var fileChooser = new FileChooser();
+
+        submit.setOnAction(e -> {});
+
+        cancel.setOnAction(e -> ScreenController.displayScreen("main-menu"));
+
         selectFile.setOnAction(e -> {
             File selectedFile = fileChooser.showOpenDialog(new Stage());
             submit.setDisable(false);
