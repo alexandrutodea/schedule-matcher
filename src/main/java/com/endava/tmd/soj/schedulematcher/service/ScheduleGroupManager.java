@@ -3,9 +3,9 @@ package com.endava.tmd.soj.schedulematcher.service;
 import com.endava.tmd.soj.schedulematcher.model.Schedule;
 import com.endava.tmd.soj.schedulematcher.model.ScheduleGroup;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The {@code ScheduleGroupManager} is capable of creating new {@link ScheduleGroup} instances, adding members
@@ -16,7 +16,7 @@ public class ScheduleGroupManager {
     private final Map<String, ScheduleGroup> groups;
 
     public ScheduleGroupManager() {
-        this.groups = new HashMap<>();
+        this.groups = new ConcurrentHashMap<>();
     }
 
     /**
