@@ -5,14 +5,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class CreateGroupRunnable implements Runnable {
+public class CreateGroupThread extends Thread {
 
     private String groupCode;
     private int size;
     private int port;
     private String address;
 
-    public CreateGroupRunnable(String address, int port, int size) {
+    public CreateGroupThread(String address, int port, int size) {
+        super("Create Group Thread");
         this.address = address;
         this.size = size;
         this.port = port;

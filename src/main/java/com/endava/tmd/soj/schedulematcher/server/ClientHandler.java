@@ -16,6 +16,7 @@ public class ClientHandler implements Runnable {
     private ObjectOutputStream clientOut;
     private ObjectInputStream clientIn;
     private InetAddress address;
+    private String groupCode;
     private int port;
 
     public ClientHandler(Socket socket, ScheduleGroupManager scheduleGroupManager) {
@@ -32,32 +33,33 @@ public class ClientHandler implements Runnable {
             this.port = client.getPort();
 
             while (true) {
-                String line = (String) clientIn.readObject();
 
-                if (line.contains("create")) {
+                Object object = clientIn.readObject();
 
-                    String[] parts = line.split(" ");
-                    int size = Integer.parseInt(parts[1]);
-                    createGroup(size);
-                    break;
-
-                } else if (line.contains("add")) {
-
-                    String[] parts = line.split(" ");
-                    String groupCode = parts[1];
-                    Schedule schedule = (Schedule) clientIn.readObject();
+                if (object instanceof String command) {
+                    if (command.contains("create")) {
+                        String[] parts = command.split(" ");
+                        int size = Integer.parseInt(parts[1]);
+                        createGroup(size);
+                        break;
+                    } else if (command.contains("add")) {
+                        String[] parts = command.split(" ");
+                        this.groupCode = parts[1];
+                        System.out.printf("Group code has been set to %s for client %s:%s\n", groupCode, address, port);
+                    } else if (command.equals("exit")) {
+                        dropClient(client, address, port);
+                        break;
+                    } else {
+                        System.out.printf("Unknown command %s received from client %s:%s\n", command, address, port);
+                    }
+                } else if (object instanceof Schedule schedule) {
+                    if (groupCode == null) {
+                        System.out.printf("Client %s:%s attempted to send schedule without setting a group\n", address, port);
+                    }
                     registerSchedule(groupCode, schedule);
-
-                } else if (line.equals("exit")) {
-
-                    dropClient(client, address, port);
-                    break;
-
-                } else {
-
-                    System.out.printf("Unknown command %s received from client %s:%s\n", line, address, port);
-
+                    System.out.println(schedule);
                 }
+
             }
 
         } catch (IOException | ClassNotFoundException e) {
@@ -73,18 +75,11 @@ public class ClientHandler implements Runnable {
     private void registerSchedule(String groupCode, Schedule schedule) throws IOException {
         scheduleGroupManager.registerMemberSchedule(groupCode, schedule);
         System.out.printf("Registered schedule from client %s:%s\n", address, port);
-
-        if (scheduleGroupManager.hasMaxSizeBeenReached(groupCode)) {
-            clientOut.writeObject("combined schedule ready");
-            clientOut.writeObject(scheduleGroupManager.getCombinedSchedule(groupCode));
-        } else {
-            clientOut.writeObject("combined schedule not ready");
-        }
     }
 
     private void createGroup(int size) throws IOException {
         String groupCode = scheduleGroupManager.createGroup(size);
-        System.out.println("Group with code " + groupCode + " has been created");
+        System.out.printf("Group with code %s has been created by client %s:%s\n", groupCode, address, port);
         clientOut.writeObject(groupCode);
     }
 }

@@ -24,7 +24,7 @@ public class ScheduleGroupManager {
      * @param maxParticipants maximum number of participants allowed into the newly created {@link ScheduleGroup}
      * @return groupID of the newly created {@link ScheduleGroup}
      */
-    public String createGroup(int maxParticipants) {
+    public synchronized String createGroup(int maxParticipants) {
         String groupCode = GroupCodeGenerator.getGroupCode(6);
 
         while (groups.containsKey(groupCode)) {
@@ -41,7 +41,7 @@ public class ScheduleGroupManager {
      * @param groupCode the group code of the {@link ScheduleGroup}
      * @param schedule the new {@link Schedule} that needs to be added
      */
-    public void registerMemberSchedule(String groupCode, Schedule schedule) {
+    public synchronized void registerMemberSchedule(String groupCode, Schedule schedule) {
 
         if (!groups.containsKey(groupCode)) {
             throw new IllegalArgumentException("No group with given ID found");
@@ -54,7 +54,7 @@ public class ScheduleGroupManager {
      * @param groupID the identifier of the {@link ScheduleGroup} for which the method needs to check if the max size has been reached
      * @return true if the max size has been reached for the {@link ScheduleGroup} with the given group ID
      */
-    public boolean hasMaxSizeBeenReached(String groupID) {
+    public synchronized boolean hasMaxSizeBeenReached(String groupID) {
         return groups.get(groupID).hasMaxSizeBeenReached();
     }
 
@@ -64,7 +64,7 @@ public class ScheduleGroupManager {
      * @return a combined schedule of all schedules in the schedule group
      * @see ScheduleCombiner
      */
-    public Schedule getCombinedSchedule(String groupID) {
+    public synchronized Schedule getCombinedSchedule(String groupID) {
         return ScheduleCombiner.getCombinedSchedule(groups.get(groupID));
     }
 
