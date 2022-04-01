@@ -69,7 +69,8 @@ public class ClientHandler implements Runnable {
                 } else if (object instanceof Schedule schedule) {
 
                     if (groupCode == null) {
-                        System.out.printf("Client %s:%s attempted to send schedule without setting a group\n", address, port);
+                        System.out.printf("Client %s:%s attempted to send schedule without setting a group\n",
+                                address, port);
                     }
 
                     registerSchedule(groupCode, schedule);
@@ -84,7 +85,9 @@ public class ClientHandler implements Runnable {
                                 try {
                                     synchronized (clientHandler.clientOut) {
                                         Schedule combinedSchedule = scheduleGroupManager.getCombinedSchedule(groupCode);
-                                        System.out.printf("Sent combined schedule to client %s:%s\n", clientHandler.address, clientHandler.port);
+                                        System.out.printf("Sent combined schedule to client %s:%s\n",
+                                                clientHandler.address,
+                                                clientHandler.port);
                                         clientHandler.clientOut.writeObject(combinedSchedule);
                                         iterator.remove();
                                     }
@@ -118,11 +121,5 @@ public class ClientHandler implements Runnable {
         String groupCode = scheduleGroupManager.createGroup(size);
         System.out.printf("Group with code %s has been created by client %s:%s\n", groupCode, address, port);
         clientOut.writeObject(groupCode);
-    }
-
-    private void writeSchedule(Schedule schedule) throws IOException {
-        synchronized (clientOut) {
-            clientOut.writeObject(schedule);
-        }
     }
 }
