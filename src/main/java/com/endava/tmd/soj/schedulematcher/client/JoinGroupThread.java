@@ -9,11 +9,11 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 public class JoinGroupThread extends Thread {
-    private String groupCode;
-    private Schedule schedule;
+    private final String groupCode;
+    private final Schedule schedule;
     private Schedule combinedSchedule;
-    private String ipAddress;
-    private int port;
+    private final String ipAddress;
+    private final int port;
 
     public JoinGroupThread(String groupCode, Schedule schedule, String ipAddress, int port) {
         super("Join Group Thread");
@@ -31,8 +31,18 @@ public class JoinGroupThread extends Thread {
             var serverIn = new ObjectInputStream(socket.getInputStream());
             serverOut.writeObject("add " + groupCode);
             serverOut.writeObject(schedule);
-            serverOut.writeObject("exit");
-        } catch (IOException e) {
+
+            while (true) {
+                var object = serverIn.readObject();
+                if (object instanceof Schedule) {
+                    this.combinedSchedule = (Schedule) object;
+                    serverOut.writeObject("exit");
+                    serverOut.close();
+                    break;
+                }
+            }
+
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

@@ -6,20 +6,18 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class ClientApplication extends Application {
 
     private static String groupCode;
     private static BorderPane root;
 
     @Override
-    public void start(Stage window) throws IOException {
+    public void start(Stage window) {
         groupCode = "";
         root = new BorderPane();
         var main = new Scene(root);
         window.setScene(main);
-        ScreenController.displayScreen("main-menu");
+        ScreenController.displayScreen("combined-schedule");
         window.setTitle("Schedule Matcher");
         window.show();
     }

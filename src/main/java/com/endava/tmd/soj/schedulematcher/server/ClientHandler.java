@@ -8,11 +8,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ClientHandler implements Runnable {
 
-    private Socket client;
-    private ScheduleGroupManager scheduleGroupManager;
+    private final Socket client;
+    private final ScheduleGroupManager scheduleGroupManager;
     private ObjectOutputStream clientOut;
     private ObjectInputStream clientIn;
     private InetAddress address;
@@ -37,27 +39,62 @@ public class ClientHandler implements Runnable {
                 Object object = clientIn.readObject();
 
                 if (object instanceof String command) {
+
                     if (command.contains("create")) {
+
                         String[] parts = command.split(" ");
                         int size = Integer.parseInt(parts[1]);
                         createGroup(size);
                         break;
+
                     } else if (command.contains("add")) {
+
                         String[] parts = command.split(" ");
                         this.groupCode = parts[1];
                         System.out.printf("Group code has been set to %s for client %s:%s\n", groupCode, address, port);
+                        ServerApplication.handlers.putIfAbsent(groupCode, new ArrayList<>());
+                        ArrayList<ClientHandler> groupHandlers = ServerApplication.handlers.get(groupCode);
+                        groupHandlers.add(this);
+
                     } else if (command.equals("exit")) {
+
                         dropClient(client, address, port);
                         break;
+
                     } else {
+
                         System.out.printf("Unknown command %s received from client %s:%s\n", command, address, port);
+
                     }
                 } else if (object instanceof Schedule schedule) {
+
                     if (groupCode == null) {
                         System.out.printf("Client %s:%s attempted to send schedule without setting a group\n", address, port);
                     }
+
                     registerSchedule(groupCode, schedule);
-                    System.out.println(schedule);
+
+                    ArrayList<ClientHandler> handlers = ServerApplication.handlers.get(groupCode);
+
+                    if (scheduleGroupManager.hasMaxSizeBeenReached(groupCode)) {
+                        synchronized (handlers) {
+                            Iterator<ClientHandler> iterator = handlers.iterator();
+                            while (iterator.hasNext()) {
+                                ClientHandler clientHandler = iterator.next();
+                                try {
+                                    synchronized (clientHandler.clientOut) {
+                                        Schedule combinedSchedule = scheduleGroupManager.getCombinedSchedule(groupCode);
+                                        System.out.printf("Sent combined schedule to client %s:%s\n", clientHandler.address, clientHandler.port);
+                                        clientHandler.clientOut.writeObject(combinedSchedule);
+                                        iterator.remove();
+                                    }
+                                } catch (IOException exception) {
+                                    exception.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+
                 }
 
             }
@@ -67,19 +104,25 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void dropClient(Socket client, InetAddress address, int port) throws IOException {
+    private synchronized void dropClient(Socket client, InetAddress address, int port) throws IOException {
         System.out.printf("Dropping client %s:%s\n", address, port);
         client.close();
     }
 
-    private void registerSchedule(String groupCode, Schedule schedule) throws IOException {
+    private synchronized void registerSchedule(String groupCode, Schedule schedule) throws IOException {
         scheduleGroupManager.registerMemberSchedule(groupCode, schedule);
         System.out.printf("Registered schedule from client %s:%s\n", address, port);
     }
 
-    private void createGroup(int size) throws IOException {
+    private synchronized void createGroup(int size) throws IOException {
         String groupCode = scheduleGroupManager.createGroup(size);
         System.out.printf("Group with code %s has been created by client %s:%s\n", groupCode, address, port);
         clientOut.writeObject(groupCode);
+    }
+
+    private void writeSchedule(Schedule schedule) throws IOException {
+        synchronized (clientOut) {
+            clientOut.writeObject(schedule);
+        }
     }
 }
