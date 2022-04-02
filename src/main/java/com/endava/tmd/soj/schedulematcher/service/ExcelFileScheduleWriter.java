@@ -22,10 +22,7 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
 
             addTemplate(workbook);
 
-            if (schedule.equals(new Schedule()))
-                exportEmptySchedule(workbook);
-            else
-                exportSchedule(schedule, workbook);
+            exportSchedule(schedule, workbook);
 
             workbook.write(outputStream);
 
@@ -61,6 +58,36 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
 
                 cell.setCellStyle(cellStyle);
             }
+
+            sheet.autoSizeColumn(i);
+        }
+
+        fillInEmptySlots(workbook);
+    }
+
+    /**
+     * Iterates over the time slots and fills in the unmodified ones with {@link IntervalColor}.GREEN.
+     * @param workbook {@link Workbook} object
+     */
+    public void fillInEmptySlots(Workbook workbook) {
+        var sheet = workbook.getSheetAt(0);
+
+        for (int i = 1; i < 12; i++) {
+            var row = sheet.getRow(i);
+
+            for (int j = 1; j < 8; j++) {
+                var cell = row.getCell(j);
+                if (cell == null) {
+                    cell = row.createCell(j);
+
+                    var cellStyle = (XSSFCellStyle) workbook.createCellStyle();
+
+                    cellStyle.setFillForegroundColor(getXSSFIntervalColor(IntervalColor.GREEN));
+                    cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+                    cell.setCellStyle(cellStyle);
+                }
+            }
         }
     }
 
@@ -86,6 +113,8 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
             var interval = (i + 7) + ":00 - " + (i + 8) + ":00";
             row.createCell(0).setCellValue(interval);
         }
+
+        sheet.autoSizeColumn(0);
     }
 
 
@@ -106,29 +135,5 @@ public class ExcelFileScheduleWriter implements ScheduleWriter {
         }
 
         return color;
-    }
-
-
-    /**
-     * Fills the interval cells in the output Excel file in {@link IntervalColor}.GREEN,
-     * mirroring an empty {@link Schedule} object.
-     * @param workbook output Excel file
-     */
-    private void exportEmptySchedule(Workbook workbook) {
-        var sheet = workbook.getSheetAt(0);
-
-            for (int i = 1; i < 12; i++) {
-                var row = sheet.getRow(i);
-
-                for (int j = 1; j < 8; j++) {
-                    var cell = row.createCell(j);
-                    var cellStyle = (XSSFCellStyle) workbook.createCellStyle();
-
-                    cellStyle.setFillForegroundColor(getXSSFIntervalColor(IntervalColor.GREEN));
-                    cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-                    cell.setCellStyle(cellStyle);
-                }
-            }
     }
 }

@@ -1,7 +1,9 @@
 package com.endava.tmd.soj.schedulematcher.service;
 
 import com.endava.tmd.soj.schedulematcher.exception.InvalidExcelFileException;
+import com.endava.tmd.soj.schedulematcher.exception.UnableToReadExcelFileException;
 import com.endava.tmd.soj.schedulematcher.model.*;
+import org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.*;
 
@@ -14,9 +16,15 @@ import java.util.List;
 public class ExcelFileScheduleLoader implements ScheduleLoader{
 
     private static final String INVALID_EXCEL_FILE_EXCEPTION_MESSAGE = "Invalid Excel schedule file";
+    private static final String UNABLE_TO_READ_EXCEL_FILE_EXCEPTION_MESSAGE = "Cannot construct instance of `com.endava.tmd.soj.schedulematcher.model.Schedule`";
     private static final Day[] days = Day.values();
 
 
+    /**
+     * Main method that constructs a {@link Schedule} instance from an {@link InputStream}.
+     * @param inputStream {@link InputStream} object
+     * @return {@link Schedule} object
+     */
     @Override
     public Schedule loadSchedule(InputStream inputStream) {
 
@@ -24,8 +32,8 @@ public class ExcelFileScheduleLoader implements ScheduleLoader{
             if (formatIsValid(workbook))
                     return buildSchedule(workbook);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | NotOfficeXmlFileException e) {
+            throw new UnableToReadExcelFileException(UNABLE_TO_READ_EXCEL_FILE_EXCEPTION_MESSAGE);
         }
 
         throw new InvalidExcelFileException(INVALID_EXCEL_FILE_EXCEPTION_MESSAGE);
