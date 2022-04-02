@@ -1,6 +1,8 @@
 package com.endava.tmd.soj.schedulematcher.client;
 
 import com.endava.tmd.soj.schedulematcher.model.Schedule;
+import com.endava.tmd.soj.schedulematcher.service.ScreenController;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -41,6 +43,10 @@ public class JoinGroupThread extends Thread {
                     break;
                 }
             }
+
+            Platform.runLater(() -> {
+                GraphicalClientApp.setCombinedSchedule(combinedSchedule);
+                ScreenController.displayScreen("combined-schedule");});
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

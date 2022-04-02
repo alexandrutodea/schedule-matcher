@@ -1,6 +1,6 @@
 package com.endava.tmd.soj.schedulematcher.ui;
 
-import com.endava.tmd.soj.schedulematcher.client.ClientApplication;
+import com.endava.tmd.soj.schedulematcher.client.GraphicalClientApp;
 import com.endava.tmd.soj.schedulematcher.service.GridPaneBuilder;
 import com.endava.tmd.soj.schedulematcher.service.ScreenController;
 import javafx.scene.Parent;
@@ -22,7 +22,7 @@ public class GroupCreatedScreen {
 
         returnToMainMenu.setOnAction(e -> ScreenController.displayScreen("main-menu"));
 
-        var groupCode = new Label(ClientApplication.getGroupCode());
+        var groupCode = new Label(GraphicalClientApp.getGroupCode());
         groupCode.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 12));
 
         gridPaneBuilder.addComponents(

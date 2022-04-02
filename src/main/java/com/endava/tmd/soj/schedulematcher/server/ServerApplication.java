@@ -5,13 +5,13 @@ import com.endava.tmd.soj.schedulematcher.service.ScheduleGroupManager;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerApplication {
 
-    protected static final Map<String, ArrayList<ClientHandler>> handlers = new ConcurrentHashMap<>();
+    protected static final Map<String, List<ClientHandler>> handlers = new ConcurrentHashMap<>();
 
     public static void main(String[] args) {
 

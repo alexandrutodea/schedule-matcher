@@ -15,7 +15,7 @@ public class TemplateFileDownloader {
     public static void downloadTemplateFile() {
         var property = System.getProperty("user.home");
         var original = Paths.get("src/main/resources/com/endava/tmd/soj/scheduleTemplate.xlsx");
-        Path copied = Paths.get(property + "/Downloads/schedule_template.xlsx");
+        Path copied = Paths.get(property + "/Downloads/schedule_template_" + System.currentTimeMillis() + ".xlsx");
         try {
             Files.copy(original, copied, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {

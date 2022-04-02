@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class ClientHandler implements Runnable {
 
@@ -53,7 +54,7 @@ public class ClientHandler implements Runnable {
                         this.groupCode = parts[1];
                         System.out.printf("Group code has been set to %s for client %s:%s\n", groupCode, address, port);
                         ServerApplication.handlers.putIfAbsent(groupCode, new ArrayList<>());
-                        ArrayList<ClientHandler> groupHandlers = ServerApplication.handlers.get(groupCode);
+                        List<ClientHandler> groupHandlers = ServerApplication.handlers.get(groupCode);
                         groupHandlers.add(this);
 
                     } else if (command.equals("exit")) {
@@ -75,9 +76,8 @@ public class ClientHandler implements Runnable {
 
                     registerSchedule(groupCode, schedule);
 
-                    ArrayList<ClientHandler> handlers = ServerApplication.handlers.get(groupCode);
-
                     if (scheduleGroupManager.hasMaxSizeBeenReached(groupCode)) {
+                        List<ClientHandler> handlers = ServerApplication.handlers.get(groupCode);
                         synchronized (handlers) {
                             Iterator<ClientHandler> iterator = handlers.iterator();
                             while (iterator.hasNext()) {
@@ -97,9 +97,7 @@ public class ClientHandler implements Runnable {
                             }
                         }
                     }
-
                 }
-
             }
 
         } catch (IOException | ClassNotFoundException e) {
@@ -119,7 +117,7 @@ public class ClientHandler implements Runnable {
 
     private synchronized void createGroup(int size) throws IOException {
         String groupCode = scheduleGroupManager.createGroup(size);
-        System.out.printf("Group with code %s has been created by client %s:%s\n", groupCode, address, port);
+        System.out.printf("Group with code %s has and size %s been created by client %s:%s\n", groupCode, size, address, port);
         clientOut.writeObject(groupCode);
     }
 }

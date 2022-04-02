@@ -1,16 +1,23 @@
 package com.endava.tmd.soj.schedulematcher.ui;
 
+import com.endava.tmd.soj.schedulematcher.client.GraphicalClientApp;
+import com.endava.tmd.soj.schedulematcher.client.JoinGroupThread;
+import com.endava.tmd.soj.schedulematcher.service.ExcelFileScheduleLoader;
 import com.endava.tmd.soj.schedulematcher.service.GridPaneBuilder;
 import com.endava.tmd.soj.schedulematcher.service.ScreenController;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-import javafx.scene.text.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 public class SelectFileScreen {
 
@@ -43,13 +50,30 @@ public class SelectFileScreen {
 
         var fileChooser = new FileChooser();
 
-        submit.setOnAction(e -> {});
+        submit.setOnAction(e -> {
+            if (GraphicalClientApp.getGroupCode().length() != 6) {
+                errorMessage.setText("Invalid group code. Return to the main menu.");
+            } else {
+                ScreenController.displayScreen("waiting");
+                var joinGroupThread = new JoinGroupThread(GraphicalClientApp.getGroupCode(), GraphicalClientApp.getSchedule(),
+                        GraphicalClientApp.getIpAddress(), GraphicalClientApp.getPort());
+                joinGroupThread.start();
+            }
+        });
 
         cancel.setOnAction(e -> ScreenController.displayScreen("main-menu"));
 
         selectFile.setOnAction(e -> {
             File selectedFile = fileChooser.showOpenDialog(new Stage());
-            submit.setDisable(false);
+            ExcelFileScheduleLoader excelFileScheduleLoader = new ExcelFileScheduleLoader();
+            try {
+                var schedule = excelFileScheduleLoader.loadSchedule(new FileInputStream(selectedFile));
+                GraphicalClientApp.setSchedule(schedule);
+                submit.setDisable(false);
+                selectFile.setDisable(true);
+            } catch (Exception exception) {
+                errorMessage.setText("Failed to load file. Try again.");
+            }
         });
 
         gridPaneBuilder.addComponents(selectFileFlow, selectFile, submit, cancel, errorMessage);

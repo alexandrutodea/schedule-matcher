@@ -2,6 +2,7 @@ package com.endava.tmd.soj.schedulematcher.ui;
 
 import com.endava.tmd.soj.schedulematcher.service.GridPaneBuilder;
 import com.endava.tmd.soj.schedulematcher.service.ScreenController;
+import com.endava.tmd.soj.schedulematcher.service.TemplateFileDownloader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.text.*;
@@ -19,8 +20,8 @@ public class DownloadTemplateScreen {
         var download = new Button("Download");
         download.setPrefSize(125, 25);
 
-        var next = new Button("Next");
-        next.setPrefSize(125, 25);
+        var skip = new Button("Skip");
+        skip.setPrefSize(125, 25);
 
         var cancel = new Button("Cancel");
         cancel.setPrefSize(125, 25);
@@ -45,11 +46,11 @@ public class DownloadTemplateScreen {
         busyIntervals.setFont(Font.font("Verdana", 12));
         putXFlow.getChildren().addAll(put, x, busyIntervals);
 
-        download.setOnAction(e -> {});
-        next.setOnAction(e -> ScreenController.displayScreen("select-file"));
+        download.setOnAction(e -> TemplateFileDownloader.downloadTemplateFile());
+        skip.setOnAction(e -> ScreenController.displayScreen("select-file"));
         cancel.setOnAction(e -> ScreenController.displayScreen("main-menu"));
 
-        gridPaneBuilder.addComponents(downloadFlow, putXFlow, download, next, cancel);
+        gridPaneBuilder.addComponents(downloadFlow, putXFlow, download, skip, cancel);
 
         return gridPaneBuilder.getGridPane();
 

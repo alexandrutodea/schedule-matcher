@@ -1,6 +1,6 @@
 package com.endava.tmd.soj.schedulematcher.service;
 
-import com.endava.tmd.soj.schedulematcher.client.ClientApplication;
+import com.endava.tmd.soj.schedulematcher.client.GraphicalClientApp;
 import com.endava.tmd.soj.schedulematcher.ui.*;
 import javafx.scene.Parent;
 
@@ -18,7 +18,7 @@ public class ScreenController {
     public static void displayScreen(String screenIdentifier) {
 
         if (screens.containsKey(screenIdentifier)) {
-            ClientApplication.getRoot().setCenter(screens.get(screenIdentifier));
+            GraphicalClientApp.getRoot().setCenter(screens.get(screenIdentifier));
         }
 
         switch (screenIdentifier) {
@@ -35,9 +35,9 @@ public class ScreenController {
 
     }
 
-    public static void saveAndDisplay(String identifier, Parent screen) {
+    private static void saveAndDisplay(String identifier, Parent screen) {
         screens.put(identifier, screen);
-        ClientApplication.getRoot().setCenter(screen);
+        GraphicalClientApp.getRoot().setCenter(screen);
     }
 
 }

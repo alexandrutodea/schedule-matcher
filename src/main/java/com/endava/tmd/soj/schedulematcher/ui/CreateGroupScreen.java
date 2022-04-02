@@ -1,5 +1,7 @@
 package com.endava.tmd.soj.schedulematcher.ui;
 
+import com.endava.tmd.soj.schedulematcher.client.CreateGroupThread;
+import com.endava.tmd.soj.schedulematcher.client.GraphicalClientApp;
 import com.endava.tmd.soj.schedulematcher.service.GridPaneBuilder;
 import com.endava.tmd.soj.schedulematcher.service.ScreenController;
 import javafx.geometry.Pos;
@@ -40,7 +42,18 @@ public class CreateGroupScreen {
         var minus = new Button("-");
         minus.setDisable(true);
 
-        createGroup.setOnAction(e -> {});
+        createGroup.setOnAction(e -> {
+            var createGroupThread = new CreateGroupThread(GraphicalClientApp.getIpAddress(),
+                    GraphicalClientApp.getPort(), Integer.parseInt(groupSize.getText()));
+            createGroupThread.start();
+            try {
+                createGroupThread.join();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            GraphicalClientApp.setGroupCode(createGroupThread.getGroupCode());
+            ScreenController.displayScreen("group-created");
+        });
 
         plus.setOnAction(e -> {
             groupSize.setText(String.valueOf(Integer.parseInt(groupSize.getText()) + 1));
