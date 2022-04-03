@@ -1,11 +1,12 @@
 package com.endava.tmd.soj.schedulematcher.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * The {@code TimeInterval} class represents a period of time between a starting hour and an ending hour in 24-hour format.
  */
-public class TimeInterval {
+public class TimeInterval implements Serializable {
 
     private final int start;
     private final int end;

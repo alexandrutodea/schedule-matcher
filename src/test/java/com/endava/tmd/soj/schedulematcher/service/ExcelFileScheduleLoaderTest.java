@@ -1,8 +1,10 @@
 package com.endava.tmd.soj.schedulematcher.service;
 
 import com.endava.tmd.soj.schedulematcher.exception.InvalidExcelFileException;
+import com.endava.tmd.soj.schedulematcher.exception.UnableToReadExcelFileException;
 import com.endava.tmd.soj.schedulematcher.model.Schedule;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -14,6 +16,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("Tests for the ExcelFileScheduleLoader class")
 class ExcelFileScheduleLoaderTest {
+
+    @Test
+    @DisplayName("Loader should throw an exception when the input file is in an invalid format")
+    void shouldThrowExceptionWhenValidIsInInvalidFormat() {
+        assertThatThrownBy(() -> scheduleLoader.loadSchedule(new FileInputStream("pom.xml")))
+                .isInstanceOf(UnableToReadExcelFileException.class)
+                .hasMessage("Cannot construct instance of `" + Schedule.class.getName() + "`");
+    }
+
 
     private final ScheduleLoader scheduleLoader = new ExcelFileScheduleLoader();
 

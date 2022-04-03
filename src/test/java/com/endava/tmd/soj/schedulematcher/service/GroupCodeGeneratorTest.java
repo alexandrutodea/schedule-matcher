@@ -17,7 +17,8 @@ class GroupCodeGeneratorTest {
     @DisplayName("The returned code is of the given length")
     @MethodSource("com.endava.tmd.soj.schedulematcher.service.GroupCodeGeneratorTest#generateLengthTestData")
     void returnedCodeMeetsLength(int length) {
-        assertThat(GroupCodeGenerator.getGroupCode(length).length())
+        assertThat(GroupCodeGenerator.getGroupCode(length)
+                .length())
                 .isEqualTo(length);
     }
 
