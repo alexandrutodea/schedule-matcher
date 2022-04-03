@@ -13,13 +13,13 @@ public class ServerApplication {
 
     protected static final Map<String, List<ClientHandler>> handlers = new ConcurrentHashMap<>();
 
-    public static void main(String[] args) {
+    public static void execute(String ipAddress, String portNumber) {
 
         var scheduleGroupManager = new ScheduleGroupManager();
 
         try {
-            var address = InetAddress.getByName(args[0]);
-            int port = Integer.parseInt(args[1]);
+            var address = InetAddress.getByName(ipAddress);
+            int port = Integer.parseInt(portNumber);
             int backlog = 50;
             var serverSocket = new ServerSocket(port, backlog, address);
             serverSocket.setReuseAddress(true);

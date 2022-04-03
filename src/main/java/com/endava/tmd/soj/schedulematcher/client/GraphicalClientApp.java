@@ -30,8 +30,8 @@ public class GraphicalClientApp extends Application {
         window.show();
     }
 
-    public static void main(String[] args) {
-        launch(GraphicalClientApp.class, args);
+    public static void execute(String ipAddress, String port) {
+        launch(GraphicalClientApp.class, ipAddress, port);
     }
 
     public static String getGroupCode() {
