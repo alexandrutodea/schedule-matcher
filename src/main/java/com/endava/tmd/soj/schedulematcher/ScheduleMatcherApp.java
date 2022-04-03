@@ -11,12 +11,9 @@ public class ScheduleMatcherApp {
         }
 
         switch (args[0]) {
-            case "client":
-                GraphicalClientApp.execute(args[1], args[2]);
-            case "server":
-                ServerApplication.execute(args[1], args[2]);
-            default:
-                throw new IllegalArgumentException("Invalid argument provided: must be either client or server");
+            case "client" -> GraphicalClientApp.execute(args[1], args[2]);
+            case "server" -> ServerApplication.execute(args[1], args[2]);
+            default -> throw new IllegalArgumentException("Invalid argument provided: must be either client or server");
         }
 
     }
